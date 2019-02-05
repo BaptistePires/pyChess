@@ -10,7 +10,7 @@ __version__ = u'1.0.0'
 
 
 # Importations
-from BasicObjects.BaseObject import BaseObject
+import pygame
 
 # Specific definitions
 
@@ -18,7 +18,7 @@ from BasicObjects.BaseObject import BaseObject
 # Classes / Functions declaration
 
 
-class Player(BaseObject):
+class BaseCanvas(pygame.Surface):
     """
     Class description
     ---------------------------------------------------------------------------
@@ -26,7 +26,7 @@ class Player(BaseObject):
     
     """
 
-    def __init__(self, cfg, game, number):
+    def __init__(self, width, height, gui, master, cfg):
         """
         Constructor
         -----------------------------------------------------------------------
@@ -35,32 +35,22 @@ class Player(BaseObject):
         Return : None.
         
         """
-        super(Player, self).__init__(config=cfg)
-        self.__game = game
-        self.__pieces = None
-        self.__number = number
-        self.__playing = False
+        super(BaseCanvas, self).__init__(size=(width, height))
+        self._ownConfig = cfg
+        self._width = width
+        self._height = height
+        self._gui = gui
+        self._master = master
+        self._bg_img = None
 
+    def draws(self):
+        pass
 
-    def is_playing(self):
-        return self.__playing
+    def set_up(self):
+        pass
 
-    def set_playing(self, p):
-        self.__playing = p
-    def getPieces(self):
-        return self.__pieces
-
-    def setPieces(self, p):
-        self.__pieces = p
-
-    def getNumber(self):
-        return self.__number
-
-    def kill_piece(self, i):
-        # print("Player / Killed : \n", self.__pieces[i])
-        self.__pieces.pop(i)
-
-
+    def set_up_bc_img(self):
+        pass
 
 
 if __name__ == '__main__':

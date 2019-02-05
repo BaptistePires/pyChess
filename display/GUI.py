@@ -48,7 +48,7 @@ class GUI(MyBaseProcess):
     def set_up(self):
         pygame.init()
         self.__window = pygame.display.set_mode((self._ownConfig["def_w"], self._ownConfig["def_h"]))
-        self.__frame = GameCanvas(self.__window, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self)
+        self.__frame = HomeCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self, cfg=self._ownConfig["canvas"]["home"])
         self.__frame.set_up()
         self._isRunning = True
 
@@ -57,6 +57,10 @@ class GUI(MyBaseProcess):
 
     def getHeight(self):
         return self._ownConfig["def_h"]
+
+    def set_game_canvas(self):
+        self.__frame = GameCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self, cfg=self._ownConfig["canvas"]["game"])
+        self.__frame.set_up()
 
     def run(self):
         """
@@ -87,6 +91,17 @@ class GUI(MyBaseProcess):
     def set_stop_event(self):
         self._stopEvent.set()
 
+    def getWindow(self):
+        return self.__window
+
+    def gerFrame(self):
+        return self.__frame
+
+    def getButtons(self):
+        return self.__frame.getButtons()
+
+    def set_state(self, state):
+        self.__main.set_state(state)
 
 if __name__ == '__main__':
     pass

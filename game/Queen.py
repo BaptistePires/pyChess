@@ -38,7 +38,6 @@ class Queen(Piece):
 
         """
         super(Queen, self).__init__(x, y, code, player)
-        print(self.code_to_str())
 
     def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos):
         """

@@ -18,6 +18,7 @@ from game.Knight import Knight
 from game.Bishop import Bishop
 from game.King import King
 from game.Queen import Queen
+from BasicObjects.BaseState import BaseState
 import pygame
 
 # Specific definitions
@@ -33,7 +34,7 @@ PAWN_CODE = 5
 # Classes / Functions declaration
 
 
-class Game(BaseObject):
+class GameState(BaseState):
     """
     This class is the main game class.
     ---------------------------------------------------------------------------
@@ -55,12 +56,13 @@ class Game(BaseObject):
         -----------------------------------------------------------------------
         Return : None.
         """
-        super(Game, self).__init__(config=cfg)
-        self.__main = main
+        super(GameState, self).__init__(cfg=cfg, main=main)
+        self._main = main
         self.__grid = []
         self.__player1 = Player(cfg=self._ownConfig["players"]["1"], game=self, number=1)
         self.__player2 = Player(cfg=self._ownConfig["players"]["2"], game=self, number=2)
         self.__piece_to_mouse = None
+
 
     def set_up(self):
         """
@@ -88,7 +90,6 @@ class Game(BaseObject):
         Return : None.
         """
         self.set_up()
-
     def set_up_grid(self):
         """
         Method called to set up the grid
@@ -131,21 +132,21 @@ class Game(BaseObject):
         pieces = []
 
         # Player 2
-        pieces.append(Rook(y=len(self.__grid) - 1, x=0, code=Piece.ROOK_CODE, player=self.__player2))
-        pieces.append(Knight(y=len(self.__grid) - 1, x=1, code=Piece.KNIGHT_CODE, player=self.__player2))
-        pieces.append(Bishop(y=len(self.__grid) - 1, x=2, code=Piece.BISHOP_CODE, player=self.__player2))
-        pieces.append(King(y=len(self.__grid) - 1, x=3, code=Piece.KING_CODE, player=self.__player2))
-        pieces.append(Queen(y=len(self.__grid) - 1, x=4, code=Piece.QUEEN_CODE, player=self.__player2))
-        pieces.append(Bishop(y=len(self.__grid) - 1, x=5, code=Piece.BISHOP_CODE, player=self.__player2))
-        pieces.append(Knight(y=len(self.__grid) - 1, x=6, code=Piece.KNIGHT_CODE, player=self.__player2))
-        pieces.append(Rook(y=len(self.__grid) - 1, x=7, code=Piece.ROOK_CODE, player=self.__player2))
-        pieces.append(Rook(y=len(self.__grid) - 1, x=8, code=Piece.ROOK_CODE, player=self.__player2))
+        pieces.append(Rook(y=7, x=0, code=Piece.ROOK_CODE, player=self.__player2))
+        pieces.append(Knight(y=7, x=1, code=Piece.KNIGHT_CODE, player=self.__player2))
+        pieces.append(Bishop(y=7, x=2, code=Piece.BISHOP_CODE, player=self.__player2))
+        pieces.append(King(y=7, x=3, code=Piece.KING_CODE, player=self.__player2))
+        pieces.append(Queen(y=7, x=4, code=Piece.QUEEN_CODE, player=self.__player2))
+        pieces.append(Bishop(y=7, x=5, code=Piece.BISHOP_CODE, player=self.__player2))
+        pieces.append(Knight(y=7, x=6, code=Piece.KNIGHT_CODE, player=self.__player2))
+        pieces.append(Rook(y=7, x=7, code=Piece.ROOK_CODE, player=self.__player2))
+        pieces.append(Rook(y=7, x=8, code=Piece.ROOK_CODE, player=self.__player2))
 
         for i in range(8):
-            print(self.__grid)
-            pieces.append(Pawn(y=len(self.__grid) - 2, x=i, code=PAWN_CODE, player=self.__player2))
+            pieces.append(Pawn(y=6, x=i, code=PAWN_CODE, player=self.__player2))
 
         self.__player2.setPieces(pieces)
+
 
     # GETTERS SETTERS
     def getGrid(self):
@@ -167,7 +168,7 @@ class Game(BaseObject):
         for event in events:
             # Window quit event
             if event.type == pygame.QUIT:
-                self.__main.stop_gui()
+                self._main.stop_gui()
 
             # Click event
             elif event.type == pygame.MOUSEBUTTONUP:
@@ -187,6 +188,9 @@ class Game(BaseObject):
                     if played:
                         self.__player1.set_playing(True)
                         self.__player2.set_playing(False)
+
+    def checkmate(self):
+        pass
 
     def check_clicked_pieces(self, pieces, mx, my, player_nb):
         """
@@ -334,5 +338,5 @@ class Game(BaseObject):
 
 
 if __name__ == '__main__':
-    g = Game(None, None)
+    g = GameState(None, None)
     g.set_up_grid()

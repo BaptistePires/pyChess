@@ -9,6 +9,7 @@ __date__ = u''
 __version__ = u'1.0.0'
 
 # Importations
+from BasicObjects.BaseCanvas import BaseCanvas
 import pygame
 
 # Specific definitions
@@ -17,7 +18,7 @@ import pygame
 # Classes / Functions declaration
 
 
-class GameCanvas(pygame.Surface):
+class GameCanvas(BaseCanvas):
     """
     Class description
     ---------------------------------------------------------------------------
@@ -25,7 +26,7 @@ class GameCanvas(pygame.Surface):
     
     """
 
-    def __init__(self, master, width, height, gui):
+    def __init__(self, master, width, height, gui,cfg):
         """
         Constructor
         -----------------------------------------------------------------------
@@ -34,14 +35,11 @@ class GameCanvas(pygame.Surface):
         Return : None.
         
         """
-        super(GameCanvas, self).__init__(size=(width, height))
-        self.__width = width
-        self.__height = height
-        self.__gui = gui
+        super(GameCanvas, self).__init__(width=width, height=height, gui=gui, master=master, cfg=cfg)
+        self._width += self._ownConfig["offsets"]["width"]
+        self._height += self._ownConfig["offsets"]["height"]
         self.__case_size = 62.5
         self.__labels = []
-        self.__master = master
-        self.__bg_img = None
 
 
     def draws(self):
@@ -72,14 +70,14 @@ class GameCanvas(pygame.Surface):
         :return:
         """
         img = pygame.image.load("res/img/echiquier.png")
-        self.__bg_img = pygame.transform.scale(img, (self.__gui.getWidth(), self.__gui.getHeight()))
+        self._bg_img = pygame.transform.scale(img, (self._gui.getWidth(), self._gui.getHeight()))
 
     def set_up_entites_img(self):
         """
         Method used to load entities img
         :return:
         """
-        for p_player in self.__gui.getPieces():
+        for p_player in self._gui.getPieces():
             for  piece in p_player:
                 piece.set_img()
 
@@ -88,18 +86,17 @@ class GameCanvas(pygame.Surface):
         Method used to draw all entities
         :return:
         """
-        players_pieces = self.__gui.getPieces()
+        players_pieces = self._gui.getPieces()
 
         for p_player in players_pieces:
             for i, piece in enumerate(p_player):
                 if piece.is_alive():
-                    # img = pygame.image.load(piece.getImgPath())
-                    # img = pygame.transform.scale(img, (int(self.__case_size - 15), int(self.__case_size - 15)))
                     if not piece.is_selected():
                         if piece.getY() > 5:
                             y = int(piece.getY()) * self.__case_size + int(15 / 2)
                         else:
                             y = piece.getY() * self.__case_size + int(15 / 2)
+
                         x = int(piece.getX() * self.__case_size) + int(15 / 2)
                         self.blit(piece.getImg(), (x, y))
                     else:
@@ -113,7 +110,7 @@ class GameCanvas(pygame.Surface):
         Method used to draw the grid (before it was drawn with lines, now it's an image, it use less ressources)
         :return:
         """
-        self.blit(self.__bg_img, (0, 0))
+        self.blit(self._bg_img, (0, 0))
         # self.__case_size = int(self.__width) / len(grid)
 
         #         pygame.draw.line(self, (0, 0, 0), ((j * self.__case_size), (i * self.__case_size)),
@@ -123,7 +120,7 @@ class GameCanvas(pygame.Surface):
         #         pygame.draw.line(self, (0, 0, 0), ((j * self.__case_size), self.__case_size + (i * self.__case_size)),
         #                          ((j * self.__case_size), i * self.__case_size))
 
-        # self.disp_case_i(self.__gui.getGrid())
+        # self.disp_case_i(self._gui.getGrid())
 
 
     def disp_case_i(self, grid):

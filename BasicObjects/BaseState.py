@@ -18,7 +18,7 @@ from BasicObjects.BaseObject import BaseObject
 # Classes / Functions declaration
 
 
-class Player(BaseObject):
+class BaseState(BaseObject):
     """
     Class description
     ---------------------------------------------------------------------------
@@ -26,41 +26,32 @@ class Player(BaseObject):
     
     """
 
-    def __init__(self, cfg, game, number):
+    def __init__(self, cfg, main):
         """
         Constructor
         -----------------------------------------------------------------------
         Arguments :
         -----------------------------------------------------------------------
         Return : None.
-        
         """
-        super(Player, self).__init__(config=cfg)
-        self.__game = game
-        self.__pieces = None
-        self.__number = number
-        self.__playing = False
+        super(BaseState, self).__init__(config=cfg)
+        self._main = main
 
-
-    def is_playing(self):
-        return self.__playing
-
-    def set_playing(self, p):
-        self.__playing = p
-    def getPieces(self):
-        return self.__pieces
-
-    def setPieces(self, p):
-        self.__pieces = p
-
-    def getNumber(self):
-        return self.__number
-
-    def kill_piece(self, i):
-        # print("Player / Killed : \n", self.__pieces[i])
-        self.__pieces.pop(i)
-
-
+    def set_up(self):
+        pass
+    def launch(self):
+        pass
+    def handle_events(self, events):
+        """
+        Method description
+        -----------------------------------------------------------------------
+        Arguments :
+        
+        -----------------------------------------------------------------------
+        Return : None.
+        """
+        for e in events:
+            pass
 
 
 if __name__ == '__main__':

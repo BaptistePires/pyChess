@@ -61,7 +61,7 @@ class Piece(object):
 
     def __str__(self):
         strr = "pos : [" + str(self._x) + "," + str(self._y) + "] \n"
-        strr += "player : " + self._player.getNumber()
+        strr += "player : " + str(self._player.getNumber())
         strr += "------------------------------"
         return(strr)
 
