@@ -37,6 +37,36 @@ class Bishop(Piece):
         """
         super(Bishop, self).__init__(x, y, code, player)
 
+
+    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos, for_check):
+        current_pl_pos, other_pl_pos = super(Bishop, self).is_move_avaible(x, y, current_pl_pos, other_pl_pos, for_check)
+        delta_x = self.getX() - x
+        delta_y = self.getY() - y
+        squares = []
+
+        if abs(delta_x) != abs(delta_y):
+            return False
+        else:
+            if delta_x < 0 and delta_y < 0:
+                for i in range(0, delta_x - 1, -1):
+                    squares.append((self.getX() - i, self.getY() - i))
+            elif delta_x < 0 and delta_y > 0:
+                for i in range(0, delta_x - 1, -1):
+                    squares.append((self.getX() - i, self.getY() + i))
+            elif  delta_x > 0 and delta_y < 0:
+                for i in range(0, delta_x + 1):
+                    squares.append((self.getX() - i, self.getY() + i))
+            elif delta_x > 0 and delta_y > 0:
+                print("yes")
+                for i in range(0, delta_x + 1):
+                    squares.append((self.getX() - i, self.getY() - i))
+
+
+        for sq in squares:
+            if sq in other_pl_pos or sq in current_pl_pos:
+                return False
+
+        return True
     def check_jump(self, x, y, other_pc_pos):
         """
         This method is used to check if the path that the Piece is taking is free or
@@ -49,7 +79,8 @@ class Bishop(Piece):
         """
 
         # First, we remove the self pos of the piece
-        other_pc_pos[0].remove(self.getPos())
+        if self.getPos() in other_pc_pos[0]:
+            other_pc_pos[0].remove(self.getPos())
 
         # This will be used for the 'for' loop, because if we have a negative
         # end number, the loop wont loop, then it is used to loop even if so
@@ -99,52 +130,8 @@ class Bishop(Piece):
         # If all these steps went well, then we return True
         return True
 
-    # def check_jdump(self, x, y, other_pc_pos):
-    #
-    #     other_pc_pos[0].remove(self.getPos())
-    #     if self.getX() - x < 0:
-    #         step_x = -1
-    #     else:
-    #         step_x = 1
-    #
-    #     if self.getY() - y < 0:
-    #         step_y = -1
-    #     else:
-    #         step_y = 1
-    #
-    #     if self.getX() > x:
-    #         print("LEFT : ", self.getX() - x)
-    #         if self.getY() > y:
-    #             print("UP : ", self.getY() - y)
-    #             loop_end = self.getX() - x + 1
-    #             for i in range(0, self.getX() - x + 1, step_x):
-    #                 next_pos = (self.getX() - i, self.getY() - i)
-    #                 if next_pos in other_pc_pos[0] and self.getX() != x and self.getY() != y:
-    #                     return False
-    #         elif self.getY() < y:
-    #             for i in range(0, self.getX() - x + 1, step_x):
-    #                 next_pos = (self.getX() - i, self.getY() + i)
-    #                 if next_pos in other_pc_pos[0] and self.getX() != x and self.getY() != y:
-    #                     return False
-    #             print("DOWN : ", self.getY() - y)
-    #     elif self.getX() < x:
-    #         print("RIGHT : ", self.getX() - x)
-    #         if self.getY() > y:
-    #             print("UP : ", self.getY() - y)
-    #             for i in range(0, self.getX() - x - 1, step_x):
-    #                 next_pos = (self.getX() - i, self.getY() + i)
-    #                 if next_pos in other_pc_pos[0] and self.getX() != x and self.getY() != y:
-    #                     return False
-    #
-    #         elif self.getY() < y:
-    #             for i in range(0, self.getX() - x - 1, step_x):
-    #                 next_pos = (self.getX() - i, self.getY() - i)
-    #                 if next_pos in other_pc_pos[0] and self.getX() != x and self.getY() != y:
-    #                     return False
-    #             print("DOWN : ", self.getY() - y)
-    #     return True
-
-    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos):
+    def is_move_avaible2(self, x, y, current_pl_pos, other_pl_pos, for_check):
+        super(Bishop, self).is_move_avaible(x, y, current_pl_pos, other_pl_pos, for_check=for_check)
 
         delta_x = abs(self.getX() - x)
         delta_y = abs(self.getY() - y)

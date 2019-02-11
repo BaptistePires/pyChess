@@ -38,29 +38,44 @@ class King(Piece):
         super(King, self).__init__(x, y, code, player)
         self.__isFirstMove = True
 
-    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos):
+    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos, for_check):
+        current_pl_pos, other_pl_pos = super(King, self).is_move_avaible(x, y, current_pl_pos, other_pl_pos, for_check=for_check)
 
-        if self.getX() - x < 0:
-            going_right = True
+        delta_x = self.getX() - x
+        delta_y = self.getY() - y
+
+        # If the King move than more than 1 square
+        if not -1 <= delta_x <= 1 or not -1 <= delta_y <= 1:
+            return False
+
+        next_pos = (0, 0)
+        # Getting the next pos of the piece
+        if delta_x != 0 and delta_y == 0:
+            if delta_x < 0:
+                next_pos = (self.getX() + 1, self.getY())
+            else:
+                next_pos = (self.getX() - 1, self.getY())
+        elif delta_y != 0 and delta_x == 0:
+            if delta_y < 0:
+                next_pos = (self.getX(), self.getY() + 1)
+            else:
+                next_pos = (self.getX(), self.getY() - 1)
         else:
-            going_right = False
+            if delta_x > 0 and delta_y > 0:
+                next_pos = (self.getX() - 1, self.getY() - 1)
+            elif delta_x > 0 and delta_y < 0:
+                next_pos = (self.getX() - 1, self.getY() + 1)
+            elif delta_x < 0 and delta_y > 0:
+                next_pos = (self.getX() + 1, self.getY() - 1)
+            elif delta_x < 0 and delta_y < 0:
+                next_pos = (self.getX() + 1, self.getY() + 1)
 
-        if self.getY() - y < 0:
-            going_up = False
+        # If there is an ally in the next pos
+        if next_pos in current_pl_pos:
+            return False
         else:
-            going_up = True
+            return True
 
-        if -1 <= self.getX() - x <= 1 and self.getY() == y:
-            if going_right and (self.getX() + 1, self.getY()) not in current_pl_pos:
-                return True
-            elif not going_right and (self.getX() - 1, self.getY()) not in current_pl_pos:
-                return True
-
-        elif -1 <= self.getY() - y <= 1 and self.getX() == x:
-            if going_up and (self.getX(), self.getY() - 1) not in current_pl_pos:
-                return True
-            elif not going_up and (self.getX(), self.getY() + 1) not in current_pl_pos:
-                return True
 
 if __name__ == '__main__':
     pass

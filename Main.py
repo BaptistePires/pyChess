@@ -45,9 +45,7 @@ class Main(object):
         self.__state = None
         self.__game = None
         pygame.init()
-        # print(self.__state)
-        # import sys
-        # sys.exit()
+
 
     def setUp(self):
         # Loading the general config of the game
@@ -75,9 +73,7 @@ class Main(object):
 
 # GETTERS SETTERS
 
-
     def set_state(self, new_state):
-
         class_name = new_state.capitalize() + "State"
         if type(self.__state).__name__ != class_name:
             # Creating dynamically the state class

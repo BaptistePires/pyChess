@@ -19,6 +19,8 @@ from game.Bishop import Bishop
 from game.King import King
 from game.Queen import Queen
 from BasicObjects.BaseState import BaseState
+from random import randint
+from time import sleep
 import pygame
 
 # Specific definitions
@@ -63,7 +65,6 @@ class GameState(BaseState):
         self.__player2 = Player(cfg=self._ownConfig["players"]["2"], game=self, number=2)
         self.__piece_to_mouse = None
 
-
     def set_up(self):
         """
         Method used to set_up everything
@@ -90,6 +91,7 @@ class GameState(BaseState):
         Return : None.
         """
         self.set_up()
+
     def set_up_grid(self):
         """
         Method called to set up the grid
@@ -125,8 +127,8 @@ class GameState(BaseState):
         pieces.append(Rook(y=0, x=7, code=Piece.ROOK_CODE, player=self.__player1))
 
         for i in range(8):
-            pieces.append(Pawn(y=1, x=i, code=PAWN_CODE, player=self.__player1))
-            pass
+            pieces.append(Pawn(y=1, x=i, code=Piece.PAWN_CODE, player=self.__player1))
+            # pass
         self.__player1.setPieces(pieces)
 
         pieces = []
@@ -140,20 +142,11 @@ class GameState(BaseState):
         pieces.append(Bishop(y=7, x=5, code=Piece.BISHOP_CODE, player=self.__player2))
         pieces.append(Knight(y=7, x=6, code=Piece.KNIGHT_CODE, player=self.__player2))
         pieces.append(Rook(y=7, x=7, code=Piece.ROOK_CODE, player=self.__player2))
-        pieces.append(Rook(y=7, x=8, code=Piece.ROOK_CODE, player=self.__player2))
 
         for i in range(8):
-            pieces.append(Pawn(y=6, x=i, code=PAWN_CODE, player=self.__player2))
-
+            pieces.append(Pawn(y=6, x=i, code=Piece.PAWN_CODE, player=self.__player2))
+            # pass
         self.__player2.setPieces(pieces)
-
-
-    # GETTERS SETTERS
-    def getGrid(self):
-        return self.__grid
-
-    def getPieces(self):
-        return self.__player1.getPieces(), self.__player2.getPieces()
 
     def handle_events(self, events):
         """
@@ -164,6 +157,10 @@ class GameState(BaseState):
         -----------------------------------------------------------------------
         Return : None.
         """
+
+        # self.TEST_AUTO()
+        # return
+
         # Event from pygame
         for event in events:
             # Window quit event
@@ -172,25 +169,43 @@ class GameState(BaseState):
 
             # Click event
             elif event.type == pygame.MOUSEBUTTONUP:
-
+                self.check_check(1)
                 # Getting mouse coordinates
                 mx, my = pygame.mouse.get_pos()
                 # Checking if it's the first player is playing
                 if self.__player1.is_playing():
-                    # If it's him then we can check what to do with his click
 
+                    # If it's him then we can check what to do with his click
                     played = self.check_clicked_pieces(self.__player1.getPieces(), mx, my, self.__player1.getNumber())
                     if played:
+                        # self.check_check(1)
                         self.__player1.set_playing(False)
                         self.__player2.set_playing(True)
+
+
                 else:
+                    self.check_check(2)
                     played = self.check_clicked_pieces(self.__player2.getPieces(), mx, my, self.__player2.getNumber())
                     if played:
-                        self.__player1.set_playing(True)
                         self.__player2.set_playing(False)
+                        self.__player1.set_playing(True)
 
-    def checkmate(self):
-        pass
+
+    def check_check(self, player_nb):
+        if player_nb == 1 :
+            king_pos = self.__player1.get_king_pos()
+            cur_pl, other_pl = self.getPlayersPos(1)
+            for p in self.__player2.getPieces():
+                if p.is_move_avaible(king_pos[0], king_pos[1], other_pl, cur_pl, True):
+                    print("Check for the player 1 !")
+
+        else:
+            king_pos = self.__player2.get_king_pos()
+            cur_pl, other_pl = self.getPlayersPos(2)
+            for p in self.__player1.getPieces():
+                if p.is_move_avaible(king_pos[0], king_pos[1], other_pl , cur_pl, True):
+                    print("Check for the player 1")
+
 
     def check_clicked_pieces(self, pieces, mx, my, player_nb):
         """
@@ -208,8 +223,7 @@ class GameState(BaseState):
             - True : If the player moved his piece
             - False : If not
         """
-        for player in (self.__player1, self.__player2):
-            current_pl_pos, other_pl_pos = self.getPlayersPos(player_nb)
+        current_pl_pos, other_pl_pos = self.getPlayersPos(player_nb)
 
         # There we go for each piece of the player to check if he clicked on one
         for p in pieces:
@@ -224,10 +238,12 @@ class GameState(BaseState):
                 p.selected()
                 # And we keep a reference to the piece
                 self.__piece_to_mouse = p
+                return False
             # Same than above but with a piece already selected, so we need to check if the square is empty or if the is
             # an enemy on it
             elif mx > x and mx < x + p.getWidth() and my > y and my < y + p.getWidth() and self.__piece_to_mouse != None and p.is_alive():
                 self.__piece_to_mouse.selected()
+                return False
 
             # If there is already a piece selected
             elif self.__piece_to_mouse is not None:
@@ -237,7 +253,8 @@ class GameState(BaseState):
                     x, y = self.get_clicked_square(mx, my)
 
                     # We call the method of the piece to check if the moce is avaible
-                    if p.is_move_avaible(x, y, current_pl_pos=current_pl_pos, other_pl_pos=other_pl_pos):
+                    if p.is_move_avaible(x, y, current_pl_pos=current_pl_pos, other_pl_pos=other_pl_pos,
+                                         for_check=False):
                         # Check if there is a kill
                         self.check_kill(x, y, player_nb)
 
@@ -254,6 +271,66 @@ class GameState(BaseState):
                     self.__piece_to_mouse = None
                     return False
         return False
+
+    def TEST_AUTO(self):
+        # TEST TEST TEST #
+        if self.__player1.is_playing():
+
+            # If it's him then we can check what to do with his click
+            self.__player2.set_playing(True)
+            self.__player1.set_playing(False)
+            return
+            move_ok = False
+            while not move_ok:
+                i = randint(0, len(self.__player1.getPieces()) - 1)
+                # x = randint(0, 7)
+                # y = randint(0, 7)
+                x = 3
+                y = 0
+                flag_move = self.__player1.getPieces()[i].is_move_avaible(
+                    x=x, y=y, current_pl_pos=self.__player1.getPieces(),
+                    other_pl_pos=self.__player2.getPieces(), for_check=False)
+                if flag_move:
+                    self.__player1.getPieces()[i].new_pos(x, y)
+                    self.check_kill(x, y, self.__player1.getNumber())
+                    self.__player2.set_playing(True)
+                    self.__player1.set_playing(False)
+                    move_ok = True
+        else:
+            # If it's him then we can check what to do with his click
+            move_ok = False
+
+            for i, p in enumerate(self.__player2.getPieces()):
+                if p.getCode() == Piece.ROOK_CODE:
+                    print(
+                        p.is_move_avaible(0, 3, self.__player2.getPieces(), self.__player1.getPieces(), for_check=True))
+
+            return
+
+            while not move_ok:
+                i = randint(0, len(self.__player2.getPieces()) - 1)
+                x = randint(0, 7)
+                y = randint(0, 7)
+                flag_move = self.__player2.getPieces()[i].is_move_avaible(
+                    x=x, y=y, current_pl_pos=self.__player2.getPieces(),
+                    other_pl_pos=self.__player1.getPieces(), for_check=False)
+                if flag_move:
+                    self.__player2.getPieces()[i].new_pos(x, y)
+                    self.check_kill(x, y, self.__player2.getNumber())
+                    self.__player2.set_playing(False)
+                    self.__player1.set_playing(True)
+                    move_ok = True
+
+        sleep(0.001)
+        sleep(0.5)
+        # TEST TEST TEST
+
+    # GETTERS SETTERS
+    def getGrid(self):
+        return self.__grid
+
+    def getPieces(self):
+        return self.__player1.getPieces(), self.__player2.getPieces()
 
     def getPlayersPos(self, player_nb):
         """

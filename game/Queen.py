@@ -39,7 +39,7 @@ class Queen(Piece):
         """
         super(Queen, self).__init__(x, y, code, player)
 
-    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos):
+    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos, for_check):
         """
         Method description
         -----------------------------------------------------------------------
@@ -48,85 +48,52 @@ class Queen(Piece):
         -----------------------------------------------------------------------
         Return :
             None
+            :param for_check:
         """
-        if self.check_lateral_move(x, y, current_pl_pos, other_pl_pos) or self.check_diag_move(x, y, (
-                current_pl_pos, other_pl_pos)):
+        current_pl_pos, other_pl_pos = super(Queen, self).is_move_avaible(x, y, current_pl_pos, other_pl_pos,
+                                                                           for_check)
+        if self.check_lateral_move(x, y, current_pl_pos, other_pl_pos, for_check=for_check) or self.check_diag_move(x,y, current_pl_pos, other_pl_pos):
             return True
         else:
             return False
 
-    def check_lateral_move(self, x, y, current_pl_pos, other_pl_pos):
-        """
-
-        :param x:
-        :param y:
-        :param current_pl_pos:
-        :param other_pl_pos:
-        :return:
-        """
-        current_pl_pos.remove(self.getPos())
-        if (x, y) in other_pl_pos:
-            other_pl_pos.remove((x, y))
-        right = None
-        up = None
-
-        if self.getX() == x and self.getY() == y:
+    def check_lateral_move(self, x, y, current_pl_pos, other_pl_pos, for_check):
+        delta_x = self.getX() - x
+        delta_y = self.getY() - y
+        if delta_x != 0 and delta_y != 0:
             return False
 
-        elif self.getY() == y and self.getX() != x:
-            if self.getX() - x < 0:
-                right = True
-            elif self.getX() - x > 0:
-                right = False
-
-            if right:
-                for i in range(0, self.getX() - x - 1, - 1):
-                    next_pos = (self.getX() - i, self.getY())
-                    if next_pos in current_pl_pos or next_pos in other_pl_pos:
-                        return False
+        step = 1
+        if delta_x != 0 and delta_y == 0:
+            if delta_x < 0:
+                step = - 1
+                max = delta_x - 1
 
             else:
-                for i in range(0, self.getX() - x + 1, 1):
-                    next_pos = (self.getX() - i, self.getY())
-                    if next_pos in current_pl_pos or next_pos in other_pl_pos:
-                        return False
-        elif self.getY() != y and self.getX() == x:
+                max = delta_x + 1
 
-            if self.getY() - y < 0:
-                up = False
-            elif self.getY() - y > 0:
-                up = True
+            for i in range(0, max, step):
+                next_pos = (self.getX() - i, self.getY())
+                if next_pos in current_pl_pos or next_pos in other_pl_pos:
+                    return False
 
-            if up:
-                for i in range(0, self.getY() - y + 1, 1):
-                    # print("test i : ", i)
-                    # print((self.getX(), self.getY() - i))
-                    next_pos = (self.getX(), self.getY() - i)
-                    if next_pos in current_pl_pos or next_pos in other_pl_pos:
-                        return False
-                        # pass
+        elif delta_y != 0 and delta_x == 0:
+            if delta_y < 0:
+                step = - 1
+                max = delta_y - 1
             else:
-                for i in range(0, self.getY() - y - 1, - 1):
-                    print("test i : ", i)
-                    print((self.getX(), self.getY() - i))
-                    next_pos = (self.getX(), self.getY() - i)
-                    if next_pos in current_pl_pos or next_pos in other_pl_pos:
-                        return False
-                        # pass
+                max = delta_y + 1
 
-        else:
-            return False
+            for i in range(0, max, step):
+                next_pos = (self.getX(), self.getY() - i)
+                if next_pos in current_pl_pos or next_pos in other_pl_pos:
+                    return False
+
+        # print(next_pos)
+
         return True
 
-    def check_horizontal_move(self, x, y):
-        if self._x == x and self._y < y or self._y > y:
-            return True
-        elif self._y == y and self._x < x or self._x > x:
-            return True
-        else:
-            return False
-
-    def check_diag_move(self, x, y, other_pc_pos, ):
+    def check_diag_move(self, x, y, current_pl_pos, other_pl_pos):
         """
         This method is used to check if the path that the Piece is taking is free or
         if another piece blocks it. Method took from Bishop.py
@@ -136,57 +103,30 @@ class Queen(Piece):
         :param other_pc_pos: List of positions of the pieces : (current player pieces pos, other player pieces pos)
         :return: True if the path is free, else False
         """
+        delta_x = self.getX() - x
+        delta_y = self.getY() - y
+        squares = []
 
-        # First, we remove the self pos of the piece
-        if self.getPos() in other_pc_pos[0]:
-            other_pc_pos[0].remove(self.getPos())
-
-        # This will be used for the 'for' loop, because if we have a negative
-        # end number, the loop wont loop, then it is used to loop even if so
-        if self.getX() - x < 0:
-            step_x = -1
+        if abs(delta_x) != abs(delta_y):
+            return False
         else:
-            step_x = 1
+            if delta_x < 0 and delta_y < 0:
+                for i in range(0, delta_x - 1, -1):
+                    squares.append((self.getX() - i, self.getY() - i))
+            elif delta_x < 0 and delta_y > 0:
+                for i in range(0, delta_x - 1, -1):
+                    squares.append((self.getX() - i, self.getY() + i))
+            elif delta_x > 0 and delta_y < 0:
+                for i in range(0, delta_x + 1):
+                    squares.append((self.getX() - i, self.getY() + i))
+            elif delta_x > 0 and delta_y > 0:
+                for i in range(0, delta_x + 1):
+                    squares.append((self.getX() - i, self.getY() - i))
 
-        # Variables used to loop after we get the direction of the piece
-        # loop_end : Number of loop needed to reach the target square
-        # new_pos_format : Used to format operations
-        loop_end = 0
-        new_pos_format = ()
-
-        # Check the direction the piece is going
-        if self.getX() > x:  # LEFT
-            if self.getY() > y:  # UP
-                loop_end = self.getX() - x + 1
-                new_pos_format = ('-', '-')
-            elif self.getY() < y:  # DOWN
-                loop_end = self.getX() - x + 1
-                new_pos_format = ('-', '+')
-        elif self.getX() < x:  # RIGHT
-            if self.getY() > y:  # UP
-                loop_end = self.getX() - x - 1
-                new_pos_format = ('-', '+')
-            elif self.getY() < y:  # DOWN
-                loop_end = self.getX() - x - 1
-                new_pos_format = ('-', '-')
-
-        # Loop the amount of square the piece need to move
-        for i in range(0, loop_end, step_x):
-            # Format the next pos, it means it calculate the next square the piece will go on
-            if new_pos_format == ('-', '-'):
-                next_pos = (self.getX() - i, self.getY() - i)
-            else:
-                next_pos = (self.getX() - i, self.getY() + i)
-
-            # Check if we cross any piece of the current piece owner
-            if next_pos in other_pc_pos[0] and self.getX() != x and self.getY() != y:
+        for sq in squares:
+            if sq in other_pl_pos or sq in current_pl_pos:
                 return False
 
-            # Check if we cross any piece of the player that is not currently playing.
-            elif next_pos in other_pc_pos[1] and next_pos[0] != x and next_pos[1] != y:
-                return False
-
-        # If all these steps went well, then we return True
         return True
 
 

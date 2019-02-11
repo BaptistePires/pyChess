@@ -69,7 +69,7 @@ class GameCanvas(BaseCanvas):
         Method used to load background image
         :return:
         """
-        img = pygame.image.load("res/img/echiquier.png")
+        img = pygame.image.load("res/img/chess_plate.png")
         self._bg_img = pygame.transform.scale(img, (self._gui.getWidth(), self._gui.getHeight()))
 
     def set_up_entites_img(self):

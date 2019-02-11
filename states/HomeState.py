@@ -47,7 +47,10 @@ class HomeState(BaseState):
         Return : None.
         """
         for e in events:
-            if e.type == pygame.MOUSEBUTTONUP:
+            # Event from pygame
+            if e.type == pygame.QUIT:
+                self._main.stop_gui()
+            elif e.type == pygame.MOUSEBUTTONUP:
                 mx, my =  pygame.mouse.get_pos()
                 for b in self._main.getButtons():
                     if mx > b.getX() and mx < b.getX() + b.getWidth() and my > b.getY() and my < b.getY() + b.getHeight():

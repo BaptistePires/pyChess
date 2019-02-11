@@ -60,8 +60,9 @@ class Piece(object):
         self.set_can_jump()
 
     def __str__(self):
-        strr = "pos : [" + str(self._x) + "," + str(self._y) + "] \n"
-        strr += "player : " + str(self._player.getNumber())
+        strr = self.code_to_str() +  " " +str(self.getColor()) + "\n"
+        strr += "pos : [" + str(self._x) + "," + str(self._y) + "] \n"
+        strr += "player : " + str(self._player.getNumber()) + "\n"
         strr += "------------------------------"
         return(strr)
 
@@ -138,8 +139,18 @@ class Piece(object):
         print("-----------------------------------------")
         print("DELAT X : ", delta_x, "DELTA Y :", delta_y)
         print("-----------------------------------------")
-    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos):
-        pass
+
+    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos, for_check):
+        # Check for the checkmate
+        if self._player.isCheck():
+            # print(self._player)
+            pass
+
+        if (x, y) in other_pl_pos:
+            other_pl_pos.remove((x, y))
+        if self.getPos() in current_pl_pos:
+            current_pl_pos.remove(self.getPos())
+        return current_pl_pos, other_pl_pos
 
     def new_pos(self,x, y):
         self._x = x
@@ -164,7 +175,6 @@ class Piece(object):
             return "knight"
         else:
             return "pawn"
-
 if __name__ == '__main__':
     pass
     

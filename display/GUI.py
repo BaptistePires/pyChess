@@ -44,10 +44,13 @@ class GUI(MyBaseProcess):
         self.__window = None
         self.__main = main
         self.__frame = None
+        self.__icon = None
 
     def set_up(self):
         pygame.init()
         self.__window = pygame.display.set_mode((self._ownConfig["def_w"], self._ownConfig["def_h"]))
+        self.__icon = pygame.image.load("res/img/king-b.png")
+        pygame.display.set_icon(self.__icon)
         self.__frame = HomeCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self, cfg=self._ownConfig["canvas"]["home"])
         self.__frame.set_up()
         self._isRunning = True

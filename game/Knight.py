@@ -79,11 +79,9 @@ class Knight(Piece):
             elif self.getY() < y:
                 print("DOWN +1")
 
-    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos):
+    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos, for_check):
+        super(Knight, self).is_move_avaible(x, y, current_pl_pos, other_pl_pos, for_check=for_check)
 
-        print((x,y))
-        # for i in other_pl_pos:
-        #     print(i)
         if (x, y) in current_pl_pos:
             return False
 
@@ -105,7 +103,6 @@ class Knight(Piece):
             return True
         else:
             return False
-
 
 if __name__ == '__main__':
     pass
