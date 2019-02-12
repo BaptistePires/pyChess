@@ -122,6 +122,8 @@ class Main(object):
     def getState(self):
         return self.__state
 
+    def get_flash_msgs(self):
+        return self.__state.get_flash_msgs()
 if __name__ == '__main__':
     main = Main()
     main.setUp()

@@ -36,6 +36,7 @@ class BaseState(BaseObject):
         """
         super(BaseState, self).__init__(config=cfg)
         self._main = main
+        self._flash_msgs = []
 
     def set_up(self):
         pass
@@ -52,6 +53,9 @@ class BaseState(BaseObject):
         """
         for e in events:
             pass
+
+    def get_flash_msgs(self):
+        return self._flash_msgs
 
 
 if __name__ == '__main__':

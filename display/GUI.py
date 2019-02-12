@@ -106,5 +106,8 @@ class GUI(MyBaseProcess):
     def set_state(self, state):
         self.__main.set_state(state)
 
+    def get_flash_msgs(self):
+        return self.__main.get_flash_msgs()
+
 if __name__ == '__main__':
     pass

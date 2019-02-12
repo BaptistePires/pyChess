@@ -55,6 +55,9 @@ class GameCanvas(BaseCanvas):
         # self.fill((255, 255, 255))
         self.draw_grid()
         self.draw_entities()
+        self.draw_flash_messages()
+        # print(self._width)
+
 
     def set_up(self):
         """

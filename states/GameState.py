@@ -21,6 +21,7 @@ from game.Queen import Queen
 from BasicObjects.BaseState import BaseState
 from random import randint
 from time import sleep
+from display.FlashMessage import *
 import pygame
 
 # Specific definitions
@@ -179,6 +180,7 @@ class GameState(BaseState):
                     played = self.check_clicked_pieces(self.__player1.getPieces(), mx, my, self.__player1.getNumber())
                     if played:
                         # self.check_check(1)
+                        self._flash_msgs.append(FlashMessage(size=20, text="Player 1 Played", x=1000, y=100, code=INFO_CODE, font="res/font/good_time.ttf"))
                         self.__player1.set_playing(False)
                         self.__player2.set_playing(True)
 
@@ -187,24 +189,33 @@ class GameState(BaseState):
                     self.check_check(2)
                     played = self.check_clicked_pieces(self.__player2.getPieces(), mx, my, self.__player2.getNumber())
                     if played:
+                        self._flash_msgs.append(FlashMessage(size=20, text="Player 2 Played", x=1000, y=100, code=INFO_CODE, font="res/font/good_time.ttf"))
                         self.__player2.set_playing(False)
                         self.__player1.set_playing(True)
 
 
     def check_check(self, player_nb):
-        if player_nb == 1 :
+        if player_nb == 1:
             king_pos = self.__player1.get_king_pos()
             cur_pl, other_pl = self.getPlayersPos(1)
             for p in self.__player2.getPieces():
                 if p.is_move_avaible(king_pos[0], king_pos[1], other_pl, cur_pl, True):
-                    print("Check for the player 1 !")
+                    self.__player1.set_check(True)
+                    self._flash_msgs.append(FlashMessage(msg="Check for the player 1 ", code=WARNING_CODE))
+                    return True
+
+            self.__player1.set_check(False)
 
         else:
             king_pos = self.__player2.get_king_pos()
             cur_pl, other_pl = self.getPlayersPos(2)
             for p in self.__player1.getPieces():
                 if p.is_move_avaible(king_pos[0], king_pos[1], other_pl , cur_pl, True):
-                    print("Check for the player 1")
+                    self.__player2.set_check(True)
+                    self._flash_msgs.append(FlashMessage(msg="Check for the \n player 2", code=WARNING_CODE))
+                    return True
+
+            self.__player2.set_check(False)
 
 
     def check_clicked_pieces(self, pieces, mx, my, player_nb):

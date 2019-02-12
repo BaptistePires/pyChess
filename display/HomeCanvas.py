@@ -38,7 +38,7 @@ class HomeCanvas(BaseCanvas):
         """
         super(HomeCanvas, self).__init__(width=width, height=height, gui=gui, master=master, cfg=cfg)
         self.__bg_color = (255, 255, 255)
-        self.__title = ""
+        self.__title = None
         self.__buttons = []
 
     def draws(self):

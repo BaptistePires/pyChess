@@ -42,25 +42,16 @@ class Player(BaseObject):
         self.__pieces = None
         self.__number = number
         self.__playing = False
-        self.__check = False
+        self.__isCheck = False
 
-
-    def check_check(self, current_pl_pos, other_pl_pos):
-
-        king_pos = self.get_king_pos()
-        player_pos, other_player = self.__game.getPlayersPos(self.getNumber())
-        for other_p in other_pl_pos:
-            if other_p.is_move_avaible(king_pos[0], king_pos[1], other_player, player_pos, True):
-                print("check by piece at :", other_p.getPos())
+    def set_check(self, isCheck):
+        self.__isCheck = isCheck
 
     def is_playing(self):
         return self.__playing
 
     def set_playing(self, p):
         self.__playing = p
-        if not p:
-            return
-            self.__game.check_check(self.getNumber())
 
     def getPieces(self):
         return self.__pieces
@@ -82,7 +73,7 @@ class Player(BaseObject):
 
 
     def isCheck(self):
-        return self.__check
+        return self.__isCheck
 
 if __name__ == '__main__':
     pass
