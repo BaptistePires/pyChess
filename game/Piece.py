@@ -12,6 +12,7 @@ __version__ = u'1.0.0'
 # Importations
 from os import sep
 import pygame
+from display.FlashMessage import FlashMessage
 # Specific definitions
 
 
@@ -113,44 +114,26 @@ class Piece(object):
         return self._y
 
     def check_jump(self, x, y, other_pc_pos):
+        pass
 
-        delta_y = self.getY() - y
-        delta_x = self.getX() - x
-        print("ENTER LOOP DELTA")
-        if delta_y < 0:
-            stride_y = -1
-        else:
-            stride_y = 1
+    def set_x(self, x):
+        self._x = x
 
-        if delta_x < 0:
-            stride_x = -1
-        else:
-            stride_x = 1
-
-        for pos in other_pc_pos:
-            for i in range(0, delta_y, stride_y):
-                if (self.getX() , self.getY() + i) == pos and pos != self.getPos():
-                    print("Oups")
-
-            for i in range(0, delta_x, stride_x):
-                if (self.getX() + i, self.getY()) == pos and pos != self.getPos():
-                    print("oups2")
-
-        print("-----------------------------------------")
-        print("DELAT X : ", delta_x, "DELTA Y :", delta_y)
-        print("-----------------------------------------")
+    def set_y(self, y):
+        self._y = y
 
     def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos, for_check):
-        # Check for the checkmate
-        if self._player.isCheck():
-            # print(self._player)
-            pass
 
         if (x, y) in other_pl_pos:
             other_pl_pos.remove((x, y))
         if self.getPos() in current_pl_pos:
             current_pl_pos.remove(self.getPos())
+
         return current_pl_pos, other_pl_pos
+
+    def move_cancel_check(self, x, y):
+
+        pass
 
     def new_pos(self,x, y):
         self._x = x

@@ -10,8 +10,8 @@ __version__ = u'1.0.0'
 
 # Importations
 from game.Piece import Piece
-
-
+from display.FlashMessage import FlashMessage
+import display
 # Specific definitions
 
 
@@ -44,6 +44,8 @@ class Bishop(Piece):
         delta_y = self.getY() - y
         squares = []
 
+
+
         if abs(delta_x) != abs(delta_y):
             return False
         else:
@@ -57,7 +59,6 @@ class Bishop(Piece):
                 for i in range(0, delta_x + 1):
                     squares.append((self.getX() - i, self.getY() + i))
             elif delta_x > 0 and delta_y > 0:
-                print("yes")
                 for i in range(0, delta_x + 1):
                     squares.append((self.getX() - i, self.getY() - i))
 
@@ -67,6 +68,7 @@ class Bishop(Piece):
                 return False
 
         return True
+
     def check_jump(self, x, y, other_pc_pos):
         """
         This method is used to check if the path that the Piece is taking is free or

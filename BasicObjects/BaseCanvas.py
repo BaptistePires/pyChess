@@ -65,13 +65,22 @@ class BaseCanvas(pygame.Surface):
                 msg.setX(x)
 
             # Setting Y pos of the msg
-            y = msg.getText().get_height() + (30 * i) + msgs[i].getText().get_height()
+            if i == 0:
+                y = msg.getText().get_height() + (20 * i) + msgs[i].getText().get_height()
+            else:
+                y = msg.getText().get_height() + (40 * i) + msgs[i - 1].getText().get_height()
+
             msg.setY(y)
 
             # Time delta between 1st time displayed and now
             time_delta = datetime.now() - msg.get_first_display()
 
             if time_delta.total_seconds() <= msg.getDuration():
+                # Borders and background
+                pygame.draw.rect(self, msg.get_color_by_code(), pygame.Rect(msg.getX() - 3, msg.getY() - 3, msg.getText().get_width() + 6, msg.getText().get_height() + 6))
+                pygame.draw.rect(self, (255, 255, 255), pygame.Rect(msg.getX(), msg.getY(), msg.getText().get_width(), msg.getText().get_height()))
+
+                # The text
                 self.blit(msg.getText(),
                           (msg.getX(), msg.getY()))
             else:

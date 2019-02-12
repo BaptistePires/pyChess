@@ -72,8 +72,13 @@ class Player(BaseObject):
                 return p.getPos()
 
 
-    def isCheck(self):
+    def is_check(self):
         return self.__isCheck
+
+    def get_game(self):
+        return self.__game
+
+
 
 if __name__ == '__main__':
     pass

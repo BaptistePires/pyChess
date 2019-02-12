@@ -72,7 +72,6 @@ class Rook(Piece):
                 if next_pos in current_pl_pos or next_pos in other_pl_pos:
                     return False
 
-        # print(next_pos)
 
         return True
 

@@ -52,12 +52,12 @@ class Queen(Piece):
         """
         current_pl_pos, other_pl_pos = super(Queen, self).is_move_avaible(x, y, current_pl_pos, other_pl_pos,
                                                                            for_check)
-        if self.check_lateral_move(x, y, current_pl_pos, other_pl_pos, for_check=for_check) or self.check_diag_move(x,y, current_pl_pos, other_pl_pos):
+        if self.check_lateral_move(x, y, current_pl_pos, other_pl_pos) or self.check_diag_move(x,y, current_pl_pos, other_pl_pos):
             return True
         else:
             return False
 
-    def check_lateral_move(self, x, y, current_pl_pos, other_pl_pos, for_check):
+    def check_lateral_move(self, x, y, current_pl_pos, other_pl_pos):
         delta_x = self.getX() - x
         delta_y = self.getY() - y
         if delta_x != 0 and delta_y != 0:

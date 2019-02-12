@@ -97,6 +97,7 @@ class Pawn(Piece):
             if self.__isFirstMove:
                 self.__isFirstMove = False
 
+            self.move_cancel_check(1,1)
             return True
         else:
             return False

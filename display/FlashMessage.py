@@ -19,7 +19,6 @@ DANGER_CODE = 2
 
 # Classes / Functions declaration
 
-# TODO : Check for extends FlashMessge by TextToDisp ????
 class FlashMessage(TextToDisp):
     """
     Class description
@@ -28,7 +27,7 @@ class FlashMessage(TextToDisp):
     
     """
 
-    def __init__(self, size, text, x, y, code, color=None, font="res/font/Montserrat-Regular.ttf", duration=3):
+    def __init__(self, size, text, x, y, code, color=None, font="res/font/Montserrat-Regular.ttf", duration=1):
         """
         Constructor
         -----------------------------------------------------------------------
@@ -53,7 +52,7 @@ class FlashMessage(TextToDisp):
         """
 
         if self.__code == INFO_CODE:
-            return (0,0,0)
+            return (25,25,112)
         elif self.__code == WARNING_CODE:
             return 	(255,215,0)
         elif self.__code == DANGER_CODE:

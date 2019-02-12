@@ -74,7 +74,8 @@ class King(Piece):
         if next_pos in current_pl_pos:
             return False
         else:
-            return True
+
+            return False
 
 
 if __name__ == '__main__':

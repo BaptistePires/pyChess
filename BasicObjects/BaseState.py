@@ -38,6 +38,8 @@ class BaseState(BaseObject):
         self._main = main
         self._flash_msgs = []
 
+    def add_msg(self, msg):
+        self._flash_msgs.append(msg)
     def set_up(self):
         pass
     def launch(self):

@@ -85,24 +85,28 @@ class Knight(Piece):
         if (x, y) in current_pl_pos:
             return False
 
+        returned = False
         if self._y + 2 == y and self._x + 1 == x:
-            return True
+            returned = True
         elif self._y + 2 == y and self._x - 1 == x:
-            return True
+            returned = True
         elif self._y - 2 == y and self._x - 1 == x:
-            return True
+            returned = True
         elif self._y - 2 == y and self._x + 1 == x:
-            return True
+            returned = True
         elif self._y - 1 == y and self._x - 2 == x:
-            return True
+            returned = True
         elif self._y + 1 == y and self._x - 2 == x:
-            return True
+            returned = True
         elif self._y - 1 == y and self._x + 2 == x:
-            return True
+            returned = True
         elif self._y + 1 == y and self._x + 2 == x:
-            return True
+            returned = True
         else:
-            return False
+            returned = False
+
+
+        return returned
 
 if __name__ == '__main__':
     pass

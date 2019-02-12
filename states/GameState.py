@@ -170,7 +170,6 @@ class GameState(BaseState):
 
             # Click event
             elif event.type == pygame.MOUSEBUTTONUP:
-                self.check_check(1)
                 # Getting mouse coordinates
                 mx, my = pygame.mouse.get_pos()
                 # Checking if it's the first player is playing
@@ -180,43 +179,21 @@ class GameState(BaseState):
                     played = self.check_clicked_pieces(self.__player1.getPieces(), mx, my, self.__player1.getNumber())
                     if played:
                         # self.check_check(1)
-                        self._flash_msgs.append(FlashMessage(size=20, text="Player 1 Played", x=1000, y=100, code=INFO_CODE, font="res/font/good_time.ttf"))
+                        self._flash_msgs.append(FlashMessage(size=20, text="Player 1 Played", x=0, y=0, code=INFO_CODE,
+                                                             font="res/font/good_time.ttf"))
                         self.__player1.set_playing(False)
                         self.__player2.set_playing(True)
+                        self.check_check(2)
 
 
                 else:
-                    self.check_check(2)
                     played = self.check_clicked_pieces(self.__player2.getPieces(), mx, my, self.__player2.getNumber())
                     if played:
-                        self._flash_msgs.append(FlashMessage(size=20, text="Player 2 Played", x=1000, y=100, code=INFO_CODE, font="res/font/good_time.ttf"))
+                        self._flash_msgs.append(FlashMessage(size=20, text="Player 2 Played", x=0, y=0, code=INFO_CODE,
+                                                             font="res/font/good_time.ttf"))
                         self.__player2.set_playing(False)
                         self.__player1.set_playing(True)
-
-
-    def check_check(self, player_nb):
-        if player_nb == 1:
-            king_pos = self.__player1.get_king_pos()
-            cur_pl, other_pl = self.getPlayersPos(1)
-            for p in self.__player2.getPieces():
-                if p.is_move_avaible(king_pos[0], king_pos[1], other_pl, cur_pl, True):
-                    self.__player1.set_check(True)
-                    self._flash_msgs.append(FlashMessage(msg="Check for the player 1 ", code=WARNING_CODE))
-                    return True
-
-            self.__player1.set_check(False)
-
-        else:
-            king_pos = self.__player2.get_king_pos()
-            cur_pl, other_pl = self.getPlayersPos(2)
-            for p in self.__player1.getPieces():
-                if p.is_move_avaible(king_pos[0], king_pos[1], other_pl , cur_pl, True):
-                    self.__player2.set_check(True)
-                    self._flash_msgs.append(FlashMessage(msg="Check for the \n player 2", code=WARNING_CODE))
-                    return True
-
-            self.__player2.set_check(False)
-
+                        self.check_check(1)
 
     def check_clicked_pieces(self, pieces, mx, my, player_nb):
         """
@@ -283,14 +260,50 @@ class GameState(BaseState):
                     return False
         return False
 
+    def check_check(self, player_nb, add_msg=True, current_player_pieces=None):
+        if player_nb == 1:
+            king_pos = self.__player1.get_king_pos()
+            cur_pl, other_pl = self.getPlayersPos(1)
+
+            if current_player_pieces != None:
+                cur_pl = current_player_pieces
+
+            for p in self.__player2.getPieces():
+                if p.is_move_avaible(king_pos[0], king_pos[1], other_pl, cur_pl, True):
+
+                    if add_msg:
+                        self._flash_msgs.append(
+                            FlashMessage(size=20, text="Check for the player 1", x=0,y=0, code=WARNING_CODE,
+                                         font="res/font/good_time.ttf"))
+                    self.__player1.set_check(True)
+                    return True
+
+            self.__player1.set_check(False)
+
+        else:
+            king_pos = self.__player2.get_king_pos()
+            cur_pl, other_pl = self.getPlayersPos(2)
+
+            if current_player_pieces != None:
+                cur_pl = current_player_pieces
+
+            for p in self.__player1.getPieces():
+                if p.is_move_avaible(king_pos[0], king_pos[1], other_pl, cur_pl, True):
+                    self.__player2.set_check(True)
+                    if add_msg:
+                        self._flash_msgs.append(
+                            FlashMessage(size=20, text="Check for the player 2", x=1000, y=100, code=WARNING_CODE,
+                                         font="res/font/good_time.ttf"))
+                    return True
+
+            self.__player2.set_check(False)
+
     def TEST_AUTO(self):
         # TEST TEST TEST #
         if self.__player1.is_playing():
 
             # If it's him then we can check what to do with his click
-            self.__player2.set_playing(True)
-            self.__player1.set_playing(False)
-            return
+
             move_ok = False
             while not move_ok:
                 i = randint(0, len(self.__player1.getPieces()) - 1)
@@ -299,8 +312,8 @@ class GameState(BaseState):
                 x = 3
                 y = 0
                 flag_move = self.__player1.getPieces()[i].is_move_avaible(
-                    x=x, y=y, current_pl_pos=self.__player1.getPieces(),
-                    other_pl_pos=self.__player2.getPieces(), for_check=False)
+                    x=x, y=y, current_pl_pos=self.__player2.getPieces(),
+                    other_pl_pos=self.__player1.getPieces(), for_check=False)
                 if flag_move:
                     self.__player1.getPieces()[i].new_pos(x, y)
                     self.check_kill(x, y, self.__player1.getNumber())
@@ -311,20 +324,13 @@ class GameState(BaseState):
             # If it's him then we can check what to do with his click
             move_ok = False
 
-            for i, p in enumerate(self.__player2.getPieces()):
-                if p.getCode() == Piece.ROOK_CODE:
-                    print(
-                        p.is_move_avaible(0, 3, self.__player2.getPieces(), self.__player1.getPieces(), for_check=True))
-
-            return
-
             while not move_ok:
                 i = randint(0, len(self.__player2.getPieces()) - 1)
                 x = randint(0, 7)
                 y = randint(0, 7)
                 flag_move = self.__player2.getPieces()[i].is_move_avaible(
-                    x=x, y=y, current_pl_pos=self.__player2.getPieces(),
-                    other_pl_pos=self.__player1.getPieces(), for_check=False)
+                    x=x, y=y, current_pl_pos=self.__player1.getPieces(),
+                    other_pl_pos=self.__player2.getPieces(), for_check=False)
                 if flag_move:
                     self.__player2.getPieces()[i].new_pos(x, y)
                     self.check_kill(x, y, self.__player2.getNumber())
