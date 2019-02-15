@@ -11,11 +11,11 @@ __version__ = u'1.0.0'
 
 
 # Importations
-import json
+from json import load
 from display.GUI import GUI
 from states.GameState import GameState
-import importlib
-import pygame
+from importlib import import_module
+from pygame import init
 # Specific definitions
 IMG_PATH = "res/img"
 
@@ -45,7 +45,7 @@ class Main(object):
         self.__allConfig = None
         self.__gui = None
         self.__state = None
-        pygame.init()
+        init()
 
 
     def setUp(self):
@@ -85,7 +85,7 @@ class Main(object):
         Return : None.
         """
         cfg_file = open("./config.json")
-        self.__allConfig = json.load(cfg_file, encoding='utf-8')
+        self.__allConfig = load(cfg_file, encoding='utf-8')
         cfg_file.close()
 
 
@@ -121,7 +121,7 @@ class Main(object):
             # Creating dynamically the state class
             try:
                 # Import library
-                module = importlib.import_module("states." + class_name)
+                module = import_module("states." + class_name)
 
                 # Get the class object
                 state_class = None
