@@ -1,5 +1,5 @@
 """
-    Class for #decrisption de la class
+    Window object
 """
 
 # Module informations
@@ -20,10 +20,10 @@ import tkinter as tk
 
 class Window(object):
     """
-    Class description
+    Window objects
     ---------------------------------------------------------------------------
     Attributes :
-    
+        - __window : tk.Tk() object
     """
 
     def __init__(self):
@@ -39,13 +39,11 @@ class Window(object):
 
     def init(self):
         """
-        Method description
+        Method used to create the window
         -----------------------------------------------------------------------
-        Arguments :
-        
+        Arguments : None.
         -----------------------------------------------------------------------
-        Return :
-            None
+        Return : None.
         """
         self.__window = tk.Tk()
 

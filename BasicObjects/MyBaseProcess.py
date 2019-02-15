@@ -1,5 +1,5 @@
 """
-    Class for #decrisption de la class
+    BaseProcess class
 """
 
 # Module informations
@@ -28,18 +28,17 @@ class MyBaseProcess(Process):
     Attributes :
         - _own_config : Self configuration of the object
         - _is_running  : True when the process is running.
+        - _stopEvent : Event used to stop the process.
     """
-    _own_config = {}
-    _is_running = False
 
     def __init__(self, config):
         """
         Constructor
         -----------------------------------------------------------------------
         Arguments :
+            - config : Config of the class
         -----------------------------------------------------------------------
         Return : None.
-        
         """
 
         # Initalize attributes
@@ -55,12 +54,9 @@ class MyBaseProcess(Process):
         """
         Method called before processing
         -----------------------------------------------------------------------
-        Arguments :
-        
+        Arguments : None.
         -----------------------------------------------------------------------
-        Return :
-            None
-
+        Return : None.
         """
         pass
 
@@ -69,15 +65,20 @@ class MyBaseProcess(Process):
         """
         Method called before processing
         -----------------------------------------------------------------------
-        Arguments :
-
+        Arguments : None.
         -----------------------------------------------------------------------
-        Return :
-            None
-
+        Return : None.
         """
         pass
 
     def handle_self_events(self):
+        """
+        Method called by the process to handle his events.
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
+        # Check if the process needs to stop
         if self._stopEvent.is_set():
             self._isRunning = False

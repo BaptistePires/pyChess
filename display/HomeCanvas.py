@@ -1,5 +1,5 @@
 """
-    Class for #decrisption de la class
+    HomeCanvas class
 """
 
 # Module informations
@@ -21,17 +21,20 @@ from display.Button import Button
 
 class HomeCanvas(BaseCanvas):
     """
-    Class description
+    Canvas for the home of the game
     ---------------------------------------------------------------------------
     Attributes :
-
+        - width, height, gui, master, cgf : See BaseCanvas class from display package.
+        - __bg_color : Background color of the canvas.
+        - __title : Title displayed on it.
+        - __buttons : Buttons of the canvas.
     """
 
     def __init__(self, master, width, height, gui, cfg):
         """
         Constructor
         -----------------------------------------------------------------------
-        Arguments :
+        Arguments : See attributes above.
         -----------------------------------------------------------------------
         Return : None.
 
@@ -43,13 +46,11 @@ class HomeCanvas(BaseCanvas):
 
     def draws(self):
         """
-        Method used to draw all images needed
+        Method used to draw everything on it.
         -----------------------------------------------------------------------
-        Arguments :
-
+        Arguments : None.
         -----------------------------------------------------------------------
-        Return :
-            None
+        Return : None.
         """
         # self.fill((255, 255, 255))
         self.draw_bg()
@@ -57,7 +58,16 @@ class HomeCanvas(BaseCanvas):
         self.draw_buttons()
 
     def set_up_title(self):
+        """
+        Method used set up the title of the canvas.
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
+        # Font of the text.
         font = "res/font/good_time.ttf"
+        # Creating and setting up the text
         self.__title = TextToDisp(font=font,
                                   size=60,
                                   text="pyChess",
@@ -66,16 +76,26 @@ class HomeCanvas(BaseCanvas):
 
         self.__title.set_up()
 
+        # Setting its x, y pos
         x = (self._width - self.__title.getText().get_width()) / 2
-        y =  self.__title.getText().get_height() + 10
+        y = self.__title.getText().get_height() + 10
 
         self.__title.setX(x)
         self.__title.setY(y)
 
-
     def set_up_buttons(self):
+        """
+        Method used to set_up buttons of the canvas
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
+        # Buttons width and height
         b_w = 200
         b_h = 50
+
+        # Creating and settign up first button : @TODO : In a future release it will be in the config file
         button = Button(x=0, y=0, w=b_w, h=b_h, color=(0,0,0), text="Settings", master=self)
 
         x = (self.get_width() - b_w) / 2
@@ -84,8 +104,10 @@ class HomeCanvas(BaseCanvas):
         button.setY(y)
         button.set_up()
 
+        # Add it to the button list
         self.__buttons.append(button)
 
+        # Creating and settign up second button
         button = Button(x=0, y=0, w=b_w, h=b_h, color=(0, 0, 0), text="Play !", master=self)
 
         x = (self.get_width() - b_w) / 2
@@ -96,16 +118,26 @@ class HomeCanvas(BaseCanvas):
 
         self.__buttons.append(button)
 
-
-
-
-
     def draw_buttons(self):
+        """
+        Method used to draw the button on the canvas.
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
         for b in self.__buttons:
             pygame.draw.rect(self, b.getColor(), b.getRect())
             self.blit(b.getText().getText(), (b.getText().getX(), b.getText().getY()))
 
     def draw_title(self):
+        """
+        Method used to draw the title on the canvas.
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
         self.blit(self.__title.getText(),
                     (self.__title.getX(), self.__title.getY()))
 
@@ -117,14 +149,23 @@ class HomeCanvas(BaseCanvas):
         """
         self.set_up_title()
         self.set_up_buttons()
+
     def draw_bg(self):
+        """
+        Method used to draw the background
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
         self.fill(self.__bg_color)
+
+    ### GETTERS / SETTERS ###
 
     def getButtons(self):
         return self.__buttons
 
     def set_state(self, state):
-        print(self._master)
         self._master.set_state(state)
 
 if __name__ == '__main__':

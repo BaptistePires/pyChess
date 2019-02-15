@@ -1,5 +1,6 @@
 """
-    Class for #decrisption de la class
+    This class is a class used to have the same base for
+    all of the canvas.
 """
 
 # Module informations
@@ -21,17 +22,22 @@ from datetime import datetime
 
 class BaseCanvas(pygame.Surface):
     """
-    Class description
+    This class inherit pygame.Surface to be displayed on the pygame window.
     ---------------------------------------------------------------------------
     Attributes :
-    
+        - _ownConfig : Config of the canvas.
+        - _width : Width of the canvas.
+        - _height : Height of the canvas.
+        - _gui : GUI object that will display the canvas.
+        - _master : The window that the current canvas will be displayed on.
+        - _bc_img : Background image of the canvas.
     """
 
     def __init__(self, width, height, gui, master, cfg):
         """
         Constructor
         -----------------------------------------------------------------------
-        Arguments :
+        Arguments : See attributes above.
         -----------------------------------------------------------------------
         Return : None.
         
@@ -88,6 +94,13 @@ class BaseCanvas(pygame.Surface):
                 self._gui.get_flash_msgs().pop(i)
 
     def draws(self):
+        """
+        Method used to draw everything on the canvas.
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
         self.draw_flash_messages()
 
     def set_up(self):

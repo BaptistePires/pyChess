@@ -1,5 +1,5 @@
 """
-    Class for #decrisption de la class
+    Button class
 """
 
 # Module informations
@@ -23,6 +23,13 @@ class Button(object):
     Class description
     ---------------------------------------------------------------------------
     Attributes :
+        - __x : x position of the button.
+        - __y : y position of the button.
+        - __width : width of the button.
+        - __height : height of the button.
+        - __text : text of the button.
+        . __color : Color of the button.
+        - __master : BaseCanvas or child object
     
     """
 
@@ -30,7 +37,7 @@ class Button(object):
         """
         Constructor
         -----------------------------------------------------------------------
-        Arguments :
+        Arguments : See attributes above.
         -----------------------------------------------------------------------
         Return : None.
         
@@ -45,19 +52,28 @@ class Button(object):
 
 
     def action(self):
+        """
+        Action that the button has to perform when he's clicked.
+        Need to be improved to have the action has an argument to the init.
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
         self.__master.set_state("game")
 
     def set_up(self):
         """
-        Method description
+        Mehtod used to set u the buttons
         -----------------------------------------------------------------------
-        Arguments :
-        
+        Arguments : None.
         -----------------------------------------------------------------------
-        Return :
-            None
+        Return : None.
         """
+        # Default font for the button
         font = "res/font/good_time.ttf"
+
+        # Setting up the text of it
         self.__text = TextToDisp(font=font,
                                   size=20,
                                   text=self.__text,
@@ -65,6 +81,7 @@ class Button(object):
 
         self.__text.set_up()
 
+        # Setting up x and y position of the text
         origin = self.getX()
         x = origin + (self.getWidth() - self.__text.getText().get_width()) / 2
         y_origin = self.getY()

@@ -1,5 +1,5 @@
 """
-    Class for #decrisption de la class
+    FlashMessage class
 """
 
 # Module informations
@@ -21,17 +21,22 @@ DANGER_CODE = 2
 
 class FlashMessage(TextToDisp):
     """
-    Class description
+    This class is the FlashMessage class, it extends TextToDisp class.
     ---------------------------------------------------------------------------
     Attributes :
-    
+        - __code : Code of the message (warning, alert, etc ...)
+        - __first_display : int used to know when the message was displayed
+                            for the first time
+        - __font : Font of the text.
+        - __duration : Time in sec that represents the time that the message
+                        should be displayed
     """
 
     def __init__(self, size, text, x, y, code, color=None, font="res/font/Montserrat-Regular.ttf", duration=1):
         """
         Constructor
         -----------------------------------------------------------------------
-        Arguments :
+        Arguments : See attributes above
         -----------------------------------------------------------------------
         Return : None.
         """
@@ -43,10 +48,9 @@ class FlashMessage(TextToDisp):
 
     def get_color_by_code(self):
         """
-        Method description
+        Method used to get the color of the text from its code
         -----------------------------------------------------------------------
-        Arguments :
-        
+        Arguments : None.
         -----------------------------------------------------------------------
         Return : None.
         """
@@ -58,6 +62,7 @@ class FlashMessage(TextToDisp):
         elif self.__code == DANGER_CODE:
             return (0,0,0)
 
+    ### GETTERS / SETTERS ###
     def getDuration(self):
         return self.__duration
 

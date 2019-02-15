@@ -1,5 +1,5 @@
 """
-    Class for #decrisption de la class
+    GUI class
 """
 
 # Module informations
@@ -24,10 +24,14 @@ import time
 
 class GUI(MyBaseProcess):
     """
-    Class description
+    This class will be the GUI of the app.
     ---------------------------------------------------------------------------
     Attributes :
-    
+        - __window : window where the canvas will be displayed.
+        - __main : main object.
+        - __frame : canvas object currently displayed.
+        - __icon : icon of the window.
+
     """
 
     def __init__(self, cfg, main):
@@ -35,25 +39,67 @@ class GUI(MyBaseProcess):
         Constructor
         -----------------------------------------------------------------------
         Arguments :
+            - cfg : See MyBaseProcess class.
+            - main : Main object
         -----------------------------------------------------------------------
         Return : None.
-        
         """
         super(GUI, self).__init__(cfg)
-        self._ownConfig = cfg
         self.__window = None
         self.__main = main
-        self.__frame = None
+        self.__canvas = None
         self.__icon = None
 
-    def set_up(self):
+    def before_processing(self):
+        """
+        Method used to set up the GUI at the start of the app.
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
+        # Init pygame
         pygame.init()
+
+        # Init the window
         self.__window = pygame.display.set_mode((self._ownConfig["def_w"], self._ownConfig["def_h"]))
         self.__icon = pygame.image.load("res/img/king-b.png")
         pygame.display.set_icon(self.__icon)
-        self.__frame = HomeCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self, cfg=self._ownConfig["canvas"]["home"])
-        self.__frame.set_up()
+
+        # Init the home canvas.
+        self.__canvas = HomeCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self, cfg=self._ownConfig["canvas"]["home"])
+        self.__canvas.set_up()
+
+        # 'Launching' the process
         self._isRunning = True
+
+
+
+    def run(self):
+        """
+        Main loop of the GUI.
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
+        # Setting up everything
+        self.before_processing()
+
+        while self._isRunning:
+            # Draw everything on the GUI
+            self.__canvas.draws()
+            self.__window.blit(self.__canvas, (0, 0))
+            pygame.display.flip()
+
+            # Handling events
+            super(GUI, self).handle_self_events()
+            self.__main.handle_events(pygame.event.get())
+
+
+            time.sleep(0.001)
+
+    ### GETTERS / SETTERS ###
 
     def getWidth(self):
         return self._ownConfig["def_w"]
@@ -62,28 +108,8 @@ class GUI(MyBaseProcess):
         return self._ownConfig["def_h"]
 
     def set_game_canvas(self):
-        self.__frame = GameCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self, cfg=self._ownConfig["canvas"]["game"])
-        self.__frame.set_up()
-
-    def run(self):
-        """
-        Method description
-        -----------------------------------------------------------------------
-        Arguments :
-        
-        -----------------------------------------------------------------------
-        Return :
-            None
-        """
-        self.set_up()
-
-        while self._isRunning:
-            self.__frame.draws()
-            self.__window.blit(self.__frame, (0, 0))
-            pygame.display.flip()
-            super(GUI, self).handle_self_events()
-            self.__main.handle_events(pygame.event.get())
-            time.sleep(0.001)
+        self.__canvas = GameCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self, cfg=self._ownConfig["canvas"]["game"])
+        self.__canvas.set_up()
 
     def getGrid(self):
         return self.__main.getGrid()
@@ -98,10 +124,10 @@ class GUI(MyBaseProcess):
         return self.__window
 
     def gerFrame(self):
-        return self.__frame
+        return self.__canvas
 
     def getButtons(self):
-        return self.__frame.getButtons()
+        return self.__canvas.getButtons()
 
     def set_state(self, state):
         self.__main.set_state(state)

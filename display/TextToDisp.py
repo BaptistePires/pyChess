@@ -1,5 +1,5 @@
 """
-    Class for #decrisption de la class
+    TextToDisp class
 """
 
 # Module informations
@@ -20,20 +20,24 @@ import pygame
 
 class TextToDisp(object):
     """
-    Class description
+    TextToDisp is a class used to display text on the screen
     ---------------------------------------------------------------------------
     Attributes :
-    
+        - __font : Font of the text.
+        - __size : Size of the text.
+        - __text : Text to be displayed.
+        - __x : x pos of the text.
+        - __y : y pos of the text.
+        - __color : Color of the text.
     """
 
     def __init__(self, font, size, text, x, y, color):
         """
         Constructor
         -----------------------------------------------------------------------
-        Arguments :
+        Arguments : See attributes above.
         -----------------------------------------------------------------------
         Return : None.
-        
         """
         super(TextToDisp, self).__init__()
         self.__font = font
@@ -44,6 +48,13 @@ class TextToDisp(object):
         self.__color = color
 
     def set_up(self):
+        """
+        Method used to set up the text
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
         font = pygame.font.Font(self.getFont(), self.getSize())
 
         self.__text = font.render(self.getText(), True, self.getColor())
