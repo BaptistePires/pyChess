@@ -81,6 +81,14 @@ class Player(BaseObject):
     def get_game(self):
         return self.__game
 
+    def get_pieces_pos(self):
+        returned_list = []
+
+        for p in self.__pieces:
+            returned_list.append(p.getPos())
+
+        return returned_list
+
 
 if __name__ == '__main__':
     pass

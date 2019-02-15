@@ -22,6 +22,7 @@ from random import randint
 from time import sleep
 from display.FlashMessage import *
 import pygame
+import copy
 
 # Specific definitions
 # CODE FOR PIECES
@@ -182,6 +183,7 @@ class GameState(BaseState):
                         # Change playing player
                         self.__player1.set_playing(False)
                         self.__player2.set_playing(True)
+                        self.check_check(2)
 
                 else:
                     played = self.check_clicked_pieces(self.__player2.getPieces(), mx, my, self.__player2.getNumber())
@@ -192,6 +194,7 @@ class GameState(BaseState):
                         # Change playing player
                         self.__player2.set_playing(False)
                         self.__player1.set_playing(True)
+                        self.check_check(1)
 
     def check_clicked_pieces(self, pieces, mx, my, player_nb):
         """
@@ -241,7 +244,8 @@ class GameState(BaseState):
 
                     # We call the method of the piece to check if the moce is avaible
                     if p.is_move_available(x, y, current_pl_pos=current_pl_pos, other_pl_pos=other_pl_pos,
-                                           for_check=False):
+                                           for_check=False) and not self.check_check(player_nb=player_nb, add_msg=True,
+                                                                                     x=x, y=y, piece_moving=p):
                         # Check if there is a kill
                         self.check_kill(x, y, player_nb)
 
@@ -256,50 +260,72 @@ class GameState(BaseState):
                     # If the move is not avaible we reset put back the piece where it belongs
                     p.selected()
                     self.__piece_to_mouse = None
+                    print(p.getPos())
                     return False
         return False
 
-    def check_check(self, player_nb, add_msg=True, current_player_pieces=None):
+    def check_check(self, player_nb, add_msg=False, piece_moving=None, x=None, y=None):
         """
-        This method is used to check if the player is under check. It still
-        under development and might not work properly
+        This method is used to check if there is a check
         -----------------------------------------------------------------------
         Arguments :
-            - player_nb : Number of the player you want to check the check state
-            - add_msg: True if you want to display FlashMessage to the screen
-            - current_player_pieces : If you want to test if there is a
-            check with a special set of pieces. It's used when the player is
-            under check and he tries a move, so we update the piece pos and
-            see if it cancel the check.
+            - player_nb : [int] Number of the player you want to check the check state
+            - add_msg: [bool] True if you want to display FlashMessage to the screen
+            - piece_moving : [Piece object or child] Need to be set if the method is called
+            because it will set up a new list with updated pos of the piece
+            - x : x target of the piece_moving
+            - y : y target of the piece_moving
         -----------------------------------------------------------------------
         Return :
             - True : If the player mis under check
             - False : If he is not
-
-        TODO : Optimize the method to remove the duplication of code
         """
 
+        # There we set up the var depending on the player
         if player_nb == 1:
             cur_pl, other_pl = self.get_players_pieces(1)
+            cur_pl_pos = self.__player1.get_pieces_pos()
             # Get the currently playing king pos
             king_pos = self.__player1.get_king_pos()
         else:
             cur_pl, other_pl = self.get_players_pieces(2)
             # Get the currently playing king pos
+            cur_pl_pos = self.__player2.get_pieces_pos()
             king_pos = self.__player2.get_king_pos()
 
+        # If the method is called with a piece that need to have its
+        # pos updated
+        if piece_moving != None:
+            # Creating a temporary lsit
+            temp_pl_pos = []
+
+            # filling it with all the pos of the current player except the piece_moving one
+            for i in cur_pl_pos:
+                if i != piece_moving.getPos():
+                    temp_pl_pos.append(i)
+
+            # Then we add the next pos of the moving_piece
+            temp_pl_pos.append((x, y))
+
+            # transfer the data between lists
+            cur_pl_pos = temp_pl_pos
+
         # Then we go through all the other pieces to check if he can reach the king
-        for p in other_pl:
+        for piece_moving in other_pl:
 
             # If it can then we return True and set the check_state of the player to
             # True and return to leave the method.
-            if p.is_move_available(king_pos[0], king_pos[1], other_pl, cur_pl, True):
-
-                if add_msg:
+            if piece_moving.is_move_available(king_pos[0], king_pos[1], other_pl, cur_pl_pos, True):
+                if add_msg and piece_moving != None:
+                    text = "There is a check for the player " + str(player_nb) + " You can't do that"
                     self._flash_msgs.append(
-                        FlashMessage(size=20, text="Check for the player 1", x=0, y=0, code=WARNING_CODE,
-                                     font="res/font/good_time.ttf"))
-                print(p)
+                        FlashMessage(size=12, text=text, x=0, y=0, code=WARNING_CODE, duration=4))
+
+                elif add_msg and piece_moving is None:
+                    text = "There is a check for the player " + str(player_nb)
+                    self._flash_msgs.append(
+                        FlashMessage(size=15, text=text, x=0, y=0, code=WARNING_CODE, duration=4))
+
                 if player_nb == 1:
                     self.__player1.set_check(True)
                 else:
@@ -313,72 +339,6 @@ class GameState(BaseState):
         else:
             self.__player2.set_check(False)
         return False
-
-
-        # Check if the parameter 'current_player_piece' is set if it's we use to it
-        # for the cur_pl var
-        if current_player_pieces != None:
-            cur_pl = current_player_pieces
-        # Check the player number to get the right set of pieces
-        if player_nb == 1:
-            # Get the currently playing king pos
-            king_pos = self.__player1.get_king_pos()
-
-            # Get the players pos
-            cur_pl, other_pl = self.getPlayersPos(1)
-
-            # Check if the parameter 'current_player_piece' is set if it's we use to it
-            # for the cur_pl var
-            if current_player_pieces != None:
-                cur_pl = current_player_pieces
-
-            # Then we go through all the other pieces to check if he can reach the king
-            for p in other_pl:
-
-                # If it can then we return True and set the check_state of the player to
-                # True and return to leave the method.
-                if p.is_move_available(king_pos[0], king_pos[1], other_pl, cur_pl, True):
-
-                    if add_msg:
-                        self._flash_msgs.append(
-                            FlashMessage(size=20, text="Check for the player 1", x=0, y=0, code=WARNING_CODE,
-                                         font="res/font/good_time.ttf"))
-                    self.__player1.set_check(True)
-                    return True
-
-            # If the return True above is never called during the loop, it means that the player
-            # is not under check so we set it to false and return False
-            self.__player1.set_check(False)
-            return False
-
-        else:
-            # Get the currently playing king pos
-            king_pos = self.__player2.get_king_pos()
-
-            # Get the players pos
-            cur_pl, other_pl = self.getPlayersPos(2)
-
-            # Check if the parameter 'current_player_piece' is set if it's we use to it
-            # for the cur_pl var
-            if current_player_pieces != None:
-                cur_pl = current_player_pieces
-
-            for p in other_pl:
-                # If it can then we return True and set the check_state of the player to
-                # True and return to leave the method.
-                if p.is_move_available(king_pos[0], king_pos[1], other_pl, cur_pl, True):
-                    if add_msg:
-                        self._flash_msgs.append(
-                            FlashMessage(size=20, text="Check for the player 2", x=1000, y=100, code=WARNING_CODE,
-                                         font="res/font/good_time.ttf"))
-
-                    self.__player2.set_check(True)
-                    return True
-
-            # If the return True above is never called during the loop, it means that the player
-            # is not under check so we set it to false and return False
-            self.__player2.set_check(False)
-            return False
 
     def TEST_AUTO(self):
         """
@@ -465,7 +425,6 @@ class GameState(BaseState):
 
         return current_pl_pos, other_pl_pos
 
-
     def get_players_pieces(self, player_nb):
         if player_nb == 1:
             cur_pl = self.__player1.getPieces()
@@ -475,6 +434,7 @@ class GameState(BaseState):
             other_pl = self.__player1.getPieces()
 
         return cur_pl, other_pl
+
     def check_kill(self, x, y, player_nb):
         """
         Method used to check if there is a kill

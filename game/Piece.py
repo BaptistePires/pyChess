@@ -98,6 +98,7 @@ class Piece(object):
         path = "res" + sep + "img" + sep + self.code_to_str() + "-" + self.getColor() + ".png"
         self._img = pygame.image.load(path)
         self._img = pygame.transform.scale(self._img, (int(62.5 - 15), int(62.5 - 15)))
+        self._is_first_move = False
 
     def getColor(self):
         if self._player.getNumber() == 1:
