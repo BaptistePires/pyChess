@@ -1,5 +1,5 @@
 """
-    Class for #decrisption de la class
+    Knight piece class
 """
 
 # Module informations
@@ -37,55 +37,27 @@ class Knight(Piece):
         """
         super(Knight, self).__init__(x, y, code, player)
 
-    def check_jump(self, x, y, other_pc_pos):
-        delta_x = self.getX() - x
-        delta_y = self.getY() - y
+    def is_move_available(self, x, y, current_pl_pos, other_pl_pos, for_check):
+        """
+        See Piece class.
+        -----------------------------------------------------------------------
+        Arguments : See Piece Class.
+        -----------------------------------------------------------------------
+        Return : See Piece Class.
+        """
+        # Calling super method to formate values
+        current_pl_pos, other_pl_pos = super(Knight, self).is_move_available(x, y, current_pl_pos, other_pl_pos,
+                                                                             for_check=for_check)
 
-        # if delta_x < x:
-        #     first_direction = "right"
-        #
-        # first_direction = ""
-        #
-        # if delta_x < 1:
-        #     delta_x_stride = -1
-        # else:
-        #     delta_x_stride = 1
-
-
-        abs_deltx = abs(delta_x)
-        abs_delty = abs(delta_y)
-        if self.getY() > y and abs_delty > abs_deltx :
-            print("UP -2")
-            if self.getX() > x:
-                print("LEFT - 1")
-            elif self.getX() < x:
-                print("LEFT + 1")
-        elif self.getY() < y and abs_delty > abs_deltx:
-            print("DOWN + 2")
-            if self.getX() > x :
-                print("LEFT - 1")
-            elif self.getX() < x:
-                print("LEFT + 1")
-        elif self.getX() > x and abs_deltx > abs_delty:
-            print("LEFT - 2")
-            if self.getY() > y:
-                print("UP - 1")
-            elif self.getY() < y:
-                print("UP + 1")
-        elif self.getX() < x and abs_deltx > abs_delty:
-            print("RIGHT +2")
-            if self.getY() > y:
-                print("UP - 1")
-            elif self.getY() < y:
-                print("DOWN +1")
-
-    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos, for_check):
-        super(Knight, self).is_move_avaible(x, y, current_pl_pos, other_pl_pos, for_check=for_check)
-
-        if (x, y) in current_pl_pos:
+        # if there is a piece of the current player or if the current knight is on the square
+        if (x, y) in current_pl_pos or (x, y) == self.getPos():
             return False
 
         returned = False
+
+        # Check if the move is avaible, no need to check if
+        # there is any piece on the the path of the knight
+        # because he can jump over it
         if self._y + 2 == y and self._x + 1 == x:
             returned = True
         elif self._y + 2 == y and self._x - 1 == x:
@@ -105,8 +77,8 @@ class Knight(Piece):
         else:
             returned = False
 
-
         return returned
+
 
 if __name__ == '__main__':
     pass

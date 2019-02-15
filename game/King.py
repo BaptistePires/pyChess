@@ -20,27 +20,36 @@ from game.Piece import Piece
 
 class King(Piece):
     """
-    Class description
+    King piece class
     ---------------------------------------------------------------------------
-    Attributes :
-
+    Attributes : See Piece Class.
+        - __isFirstMove : Flag to know if the move is the first one
     """
 
     def __init__(self, x, y, code, player):
         """
         Constructor
         -----------------------------------------------------------------------
-        Arguments :
+        Arguments : See Piece Class.
         -----------------------------------------------------------------------
         Return : None.
-
         """
         super(King, self).__init__(x, y, code, player)
         self.__isFirstMove = True
 
-    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos, for_check):
-        current_pl_pos, other_pl_pos = super(King, self).is_move_avaible(x, y, current_pl_pos, other_pl_pos, for_check=for_check)
+    def is_move_available(self, x, y, current_pl_pos, other_pl_pos, for_check):
+        """
+        See Piece class.
+        -----------------------------------------------------------------------
+        Arguments : See Piece Class.
+        -----------------------------------------------------------------------
+        Return : See Piece Class.
+        """
+        # Calling super method to format the values
+        current_pl_pos, other_pl_pos = super(King, self).is_move_available(x, y, current_pl_pos, other_pl_pos,
+                                                                           for_check=for_check)
 
+        # Getting delta of the move
         delta_x = self.getX() - x
         delta_y = self.getY() - y
 
@@ -74,7 +83,6 @@ class King(Piece):
         if next_pos in current_pl_pos:
             return False
         else:
-
             return False
 
 

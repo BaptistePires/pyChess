@@ -8,11 +8,12 @@ __author__ = u'Pires Baptiste (baptiste.pires37@gmail.com)'
 __date__ = u''
 __version__ = u'1.0.0'
 
-
 # Importations
 from os import sep
 import pygame
 from display.FlashMessage import FlashMessage
+
+
 # Specific definitions
 
 
@@ -24,7 +25,13 @@ class Piece(object):
     Class description
     ---------------------------------------------------------------------------
     Attributes :
-    
+        - x : x Pos of the piece.
+        - y : y pos if the piece.
+        - code : Code of the piece.
+        - player : Player object that is the 'owner' of the piece.
+        - img : Img of the piece.
+        - width : width of the piece.
+        - selected : Flag used to know if the piece is selected.
     """
 
     # Const TODO: Check why it's not working when it outside the class
@@ -39,15 +46,13 @@ class Piece(object):
     NUMBER_1_COLOR = "w"
     NUMBER_2_COLOR = "b"
 
-
     def __init__(self, x, y, code, player):
         """
         Constructor
         -----------------------------------------------------------------------
-        Arguments :
+        Arguments : See Piece Class.
         -----------------------------------------------------------------------
         Return : None.
-        
         """
         self._x = x
         self._y = y
@@ -56,41 +61,49 @@ class Piece(object):
         self._img = None
         self._width = 62.5
         self._selected = False
-        self._alive = True
-        self._can_jump = False
-        self.set_can_jump()
+
 
     def __str__(self):
-        strr = self.code_to_str() +  " " +str(self.getColor()) + "\n"
-        strr += "pos : [" + str(self._x) + "," + str(self._y) + "] \n"
-        strr += "player : " + str(self._player.getNumber()) + "\n"
-        strr += "------------------------------"
-        return(strr)
-
-    def set_can_jump(self):
-        if self.getCode() == self.KNIGHT_CODE:
-            self._can_jump = True
-        else:
-            self._can_jump = False
-
-    def set_img(self):
-        # Method used to set_up the img of the piece
-        path = "res" + sep + "img" + sep + self.code_to_str() + "-" + self.getColor() + ".png"
-        self._img = pygame.image.load(path)
-        self._img = pygame.transform.scale(self._img, (int(62.5 - 15), int(62.5 - 15)))
-
-
-    def getColor(self):
-        if self._player.getNumber() == 1:
-            return self.NUMBER_1_COLOR
-        else:
-            return self.NUMBER_2_COLOR
+        """
+        Method called when you print a piece.
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
+        returned_str = ""
+        returned_str += self.code_to_str() + " " + str(self.getColor()) + "\n"
+        returned_str += "pos : [" + str(self._x) + "," + str(self._y) + "] \n"
+        returned_str += "player : " + str(self._player.getNumber()) + "\n"
+        returned_str += "------------------------------"
+        return returned_str
 
     def selected(self):
         if self._selected:
             self._selected = False
         else:
             self._selected = True
+
+    ### GETTERS / SETTERS ###
+
+    def set_img(self):
+        """
+        Method called to set the img to the piece.
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
+        # Method used to set_up the img of the piece
+        path = "res" + sep + "img" + sep + self.code_to_str() + "-" + self.getColor() + ".png"
+        self._img = pygame.image.load(path)
+        self._img = pygame.transform.scale(self._img, (int(62.5 - 15), int(62.5 - 15)))
+
+    def getColor(self):
+        if self._player.getNumber() == 1:
+            return self.NUMBER_1_COLOR
+        else:
+            return self.NUMBER_2_COLOR
 
     def is_selected(self):
         return self._selected
@@ -122,7 +135,7 @@ class Piece(object):
     def set_y(self, y):
         self._y = y
 
-    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos, for_check):
+    def is_move_available(self, x, y, current_pl_pos, other_pl_pos, for_check):
 
         if (x, y) in other_pl_pos:
             other_pl_pos.remove((x, y))
@@ -132,10 +145,9 @@ class Piece(object):
         return current_pl_pos, other_pl_pos
 
     def move_cancel_check(self, x, y):
-
         pass
 
-    def new_pos(self,x, y):
+    def new_pos(self, x, y):
         self._x = x
         self._y = y
 
@@ -143,7 +155,7 @@ class Piece(object):
         return self._player.getNumber()
 
     def is_alive(self):
-        return self._alive
+        return True
 
     def code_to_str(self):
         if self._code == 0:
@@ -158,6 +170,7 @@ class Piece(object):
             return "knight"
         else:
             return "pawn"
+
+
 if __name__ == '__main__':
     pass
-    

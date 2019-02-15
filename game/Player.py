@@ -1,5 +1,5 @@
 """
-    Class for #decrisption de la class
+    Player class
 """
 
 # Module informations
@@ -10,9 +10,9 @@ __author__ = u'Pires Baptiste (baptiste.pires37@gmail.com)'
 __date__ = u''
 __version__ = u'1.0.0'
 
-
 # Importations
 from BasicObjects.BaseObject import BaseObject
+
 
 # Specific definitions
 
@@ -22,20 +22,23 @@ from BasicObjects.BaseObject import BaseObject
 
 class Player(BaseObject):
     """
-    Class description
+    This is the player class.
     ---------------------------------------------------------------------------
     Attributes :
-    
+        - __game : Game object.
+        - __pieces : Pieces of the pieces.
+        - __number : Number of the player.
+        - __playing : Flag to know if the player is currently playing.
+        - __isCheck : Flag to know if the player is under check.
     """
 
     def __init__(self, cfg, game, number):
         """
         Constructor
         -----------------------------------------------------------------------
-        Arguments :
+        Arguments : See attributes above.
         -----------------------------------------------------------------------
         Return : None.
-        
         """
         super(Player, self).__init__(config=cfg)
         self.__game = game
@@ -43,6 +46,11 @@ class Player(BaseObject):
         self.__number = number
         self.__playing = False
         self.__isCheck = False
+
+    def kill_piece(self, i):
+        self.__pieces.pop(i)
+
+    ### GETTERS / SETTERS ###
 
     def set_check(self, isCheck):
         self.__isCheck = isCheck
@@ -62,15 +70,10 @@ class Player(BaseObject):
     def getNumber(self):
         return self.__number
 
-    def kill_piece(self, i):
-        # print("Player / Killed : \n", self.__pieces[i])
-        self.__pieces.pop(i)
-
     def get_king_pos(self):
         for p in self.getPieces():
             if p.getCode() == Piece.KING_CODE:
                 return p.getPos()
-
 
     def is_check(self):
         return self.__isCheck
@@ -79,7 +82,5 @@ class Player(BaseObject):
         return self.__game
 
 
-
 if __name__ == '__main__':
     pass
-    

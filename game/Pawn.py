@@ -1,5 +1,5 @@
 """
-    Class for #decrisption de la class
+    Pawn piece class
 """
 
 # Module informations
@@ -38,19 +38,22 @@ class Pawn(Piece):
         super(Pawn, self).__init__(x, y, code, player)
         self.__isFirstMove = True
 
-    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos, for_check):
+    def is_move_available(self, x, y, current_pl_pos, other_pl_pos, for_check):
         """
-        Method used to check if the piece can move
+        See Piece class.
         -----------------------------------------------------------------------
-        Arguments : See super method (Piece.py)
+        Arguments : See Piece Class.
         -----------------------------------------------------------------------
-        Return : See super method (Piece.py)
-        :param for_check:
+        Return : See Piece Class.
         """
         # Call super method to get the rights arrays
-        current_pl_pos, other_pl_pos = super(Pawn, self).is_move_avaible(x, y, current_pl_pos, other_pl_pos, for_check=for_check)
+        current_pl_pos, other_pl_pos = super(Pawn, self).is_move_available(x, y, current_pl_pos, other_pl_pos,
+                                                                           for_check=for_check)
+
+        # Getting the x detla
         delta_x = self.getX() - x
-        # Flag to check if th emove is avaible
+
+        # Flag to check if the move is available
         can_move = False
 
         # There, we check where the piece is going
@@ -75,7 +78,6 @@ class Pawn(Piece):
             # delta_y = The delta of the origin pos and the next one
             delta_y = self.getY() - y
 
-
             # The step of the for loop
             step = 1
 
@@ -83,21 +85,21 @@ class Pawn(Piece):
             if delta_y < 0:
                 # If the pawn is going "down" on the grid
                 step = - 1
-                max = delta_y - 1
+                max_for_loop = delta_y - 1
             else:
+                max_for_loop = delta_y + 1
 
-                max = delta_y + 1
-
-            for i in range(0, max, step):
+            for i in range(0, max_for_loop, step):
                 # Get the next square taht the pawn will go trough and check if there is any other piece on it
                 next_pos = (self.getX(), self.getY() - i)
                 if next_pos in current_pl_pos or next_pos in other_pl_pos:
                     return False
 
+            # If it's first first move of the pawn then we set it to false
             if self.__isFirstMove:
                 self.__isFirstMove = False
 
-            self.move_cancel_check(1,1)
+            self.move_cancel_check(1, 1)
             return True
         else:
             return False

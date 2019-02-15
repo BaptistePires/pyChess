@@ -37,15 +37,30 @@ class Rook(Piece):
         """
         super(Rook, self).__init__(x, y, code, player)
 
-    def is_move_avaible(self, x, y, current_pl_pos, other_pl_pos, for_check):
-        current_pl_pos, other_pl_pos = super(Rook, self).is_move_avaible(x, y, current_pl_pos, other_pl_pos, for_check=for_check)
+    def is_move_available(self, x, y, current_pl_pos, other_pl_pos, for_check):
+        """
+        See Piece method.
+        -----------------------------------------------------------------------
+        Arguments : See Piece method.
+        -----------------------------------------------------------------------
+        Return : See Piece method.
+        """
+        # Calling the super class to format values
+        current_pl_pos, other_pl_pos = super(Rook, self).is_move_available(x, y, current_pl_pos, other_pl_pos,
+                                                                           for_check=for_check)
+
+        # Getting the deltas
         delta_x = self.getX() - x
         delta_y = self.getY() - y
 
+        # If both deltas are not equals to deltas it means the
+        # Rook is not going vertically or horizontally
         if delta_x != 0 and delta_y != 0:
             return False
 
         step = 1
+        # Setting the the step and the max_for_loop value depending
+        # of the direction of the piece
         if delta_x != 0 and delta_y == 0:
             if delta_x < 0:
                 step = - 1
@@ -54,6 +69,7 @@ class Rook(Piece):
             else:
                 max = delta_x + 1
 
+            # Checking if there is any pieces on the path of the Queen.
             for i in range(0, max, step):
                 next_pos = (self.getX() - i, self.getY())
                 if next_pos in current_pl_pos or next_pos in other_pl_pos:
@@ -66,12 +82,11 @@ class Rook(Piece):
             else:
                 max = delta_y + 1
 
-
+            # Checking if there is any pieces on the path of the Queen.
             for i in range(0, max, step):
                 next_pos = (self.getX(), self.getY() - i)
                 if next_pos in current_pl_pos or next_pos in other_pl_pos:
                     return False
-
 
         return True
 

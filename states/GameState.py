@@ -241,8 +241,8 @@ class GameState(BaseState):
                     x, y = self.get_clicked_square(mx, my)
 
                     # We call the method of the piece to check if the moce is avaible
-                    if p.is_move_avaible(x, y, current_pl_pos=current_pl_pos, other_pl_pos=other_pl_pos,
-                                         for_check=False):
+                    if p.is_move_available(x, y, current_pl_pos=current_pl_pos, other_pl_pos=other_pl_pos,
+                                           for_check=False):
                         # Check if there is a kill
                         self.check_kill(x, y, player_nb)
 
@@ -269,7 +269,7 @@ class GameState(BaseState):
                 cur_pl = current_player_pieces
 
             for p in self.__player2.getPieces():
-                if p.is_move_avaible(king_pos[0], king_pos[1], other_pl, cur_pl, True):
+                if p.is_move_available(king_pos[0], king_pos[1], other_pl, cur_pl, True):
 
                     if add_msg:
                         self._flash_msgs.append(
@@ -288,7 +288,7 @@ class GameState(BaseState):
                 cur_pl = current_player_pieces
 
             for p in self.__player1.getPieces():
-                if p.is_move_avaible(king_pos[0], king_pos[1], other_pl, cur_pl, True):
+                if p.is_move_available(king_pos[0], king_pos[1], other_pl, cur_pl, True):
                     self.__player2.set_check(True)
                     if add_msg:
                         self._flash_msgs.append(
@@ -311,7 +311,7 @@ class GameState(BaseState):
                 # y = randint(0, 7)
                 x = 3
                 y = 0
-                flag_move = self.__player1.getPieces()[i].is_move_avaible(
+                flag_move = self.__player1.getPieces()[i].is_move_available(
                     x=x, y=y, current_pl_pos=self.__player2.getPieces(),
                     other_pl_pos=self.__player1.getPieces(), for_check=False)
                 if flag_move:
@@ -328,7 +328,7 @@ class GameState(BaseState):
                 i = randint(0, len(self.__player2.getPieces()) - 1)
                 x = randint(0, 7)
                 y = randint(0, 7)
-                flag_move = self.__player2.getPieces()[i].is_move_avaible(
+                flag_move = self.__player2.getPieces()[i].is_move_available(
                     x=x, y=y, current_pl_pos=self.__player1.getPieces(),
                     other_pl_pos=self.__player2.getPieces(), for_check=False)
                 if flag_move:
