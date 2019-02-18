@@ -64,7 +64,7 @@ class GUI(MyBaseProcess):
 
         # Init the window
         self.__window = pygame.display.set_mode((self._ownConfig["def_w"], self._ownConfig["def_h"]))
-        self.__icon = pygame.image.load("res/img/king-b.png")
+        self.__icon = pygame.image.load("res/img/theme_1/king-b.png")
         pygame.display.set_icon(self.__icon)
 
         # Init the home canvas.
@@ -169,6 +169,9 @@ class GUI(MyBaseProcess):
 
     def get_flash_msgs(self):
         return self.__main.get_flash_msgs()
+
+    def get_theme(self):
+        return self.__main.get_theme()
 
 if __name__ == '__main__':
     pass

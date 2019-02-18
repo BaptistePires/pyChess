@@ -46,6 +46,7 @@ class Main(object):
         self.__gui = None
         self.__state = None
         self.__current_state = ""
+        self.__theme = 1
         init()
 
 
@@ -229,7 +230,11 @@ class Main(object):
         """
         return self.__state.get_flash_msgs()
 
+    def get_theme(self):
+        return self.__theme
 
+    def set_theme(self, theme):
+        self.__theme = theme
 if __name__ == '__main__':
     main = Main()
     main.setUp()

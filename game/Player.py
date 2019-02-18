@@ -89,6 +89,9 @@ class Player(BaseObject):
 
         return returned_list
 
+    def get_theme(self):
+        return self.__game.get_theme()
+
 
 if __name__ == '__main__':
     pass

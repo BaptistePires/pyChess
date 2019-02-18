@@ -11,6 +11,7 @@ __version__ = u'1.0.0'
 # Importations
 from BasicObjects.BaseCanvas import BaseCanvas
 import pygame
+from os import sep
 
 # Specific definitions
 
@@ -67,7 +68,7 @@ class GameCanvas(BaseCanvas):
         Method used to load background image
         :return:
         """
-        img = pygame.image.load("res/img/chess_plate.png")
+        img = pygame.image.load("res" + sep + "img" + sep + "theme_" + str(self._gui.get_theme()) + sep + "chess_plate.png")
         self._bg_img = pygame.transform.scale(img, (self._gui.getWidth(), self._gui.getHeight()))
 
     def set_up_entites_img(self):

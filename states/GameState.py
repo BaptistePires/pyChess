@@ -421,6 +421,10 @@ class GameState(BaseState):
         else:
             self.__player2.kill_piece(piece)
 
+
+    def get_theme(self):
+        return self._main.get_theme()
+
     @staticmethod
     def get_clicked_square(x, y):
         """

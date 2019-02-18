@@ -95,7 +95,7 @@ class HomeCanvas(BaseCanvas):
         b_w = 200
         b_h = 50
 
-        # Creating and settign up first button : @TODO : In a future release it will be in the config file
+        # Creating and settign up first button :
         button = Button(x=0, y=0, w=b_w, h=b_h, color=(0,0,0), text="Settings", master=self, action=self.set_home_state)
 
         x = (self.get_width() - b_w) / 2

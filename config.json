@@ -2,7 +2,7 @@
   "main": "",
   "gui": {
     "def_w": 500,
-    "def_h":500,
+    "def_h": 500,
     "canvas": {
       "game": {
         "offsets": {
