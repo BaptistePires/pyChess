@@ -2,12 +2,12 @@
   "main": "",
   "gui": {
     "def_w": 500,
-    "def_h": 500,
+    "def_h": 600,
     "canvas": {
       "game": {
         "offsets": {
           "width": -0,
-          "height": -0
+          "height": -100
         }
       },
       "home": {},

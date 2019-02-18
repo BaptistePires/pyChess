@@ -170,6 +170,12 @@ class GameState(BaseState):
             elif event.type == pygame.MOUSEBUTTONUP:
                 # Getting mouse coordinates
                 mx, my = pygame.mouse.get_pos()
+
+                # Checking button click
+                for b in self._main.getButtons():
+                    if mx > b.getX() and mx < b.getX() + b.getWidth() and my > b.getY() and my < b.getY() + b.getHeight():
+                        b.action()
+
                 # Checking if it's the first player is playing
                 if self.__player1.is_playing():
 
@@ -195,6 +201,12 @@ class GameState(BaseState):
                         self.__player2.set_playing(False)
                         self.__player1.set_playing(True)
                         self.check_check(1)
+            else:
+                # Getting mouse coordinates
+                mx, my = pygame.mouse.get_pos()
+
+                for b in self._main.getButtons():
+                    b.hover(mx,my)
 
     def check_clicked_pieces(self, pieces, mx, my, player_nb):
         """
