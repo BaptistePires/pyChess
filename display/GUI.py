@@ -9,8 +9,8 @@ __date__ = u'28/01/19'
 __version__ = u'1.0.0'
 
 # Importations
-from display.GameCanvas import GameCanvas
-from display.HomeCanvas import HomeCanvas
+from canvas.GameCanvas import GameCanvas
+from canvas.HomeCanvas import HomeCanvas
 import pygame
 from BasicObjects.MyBaseProcess import MyBaseProcess
 import time
@@ -117,7 +117,7 @@ class GUI(MyBaseProcess):
             # Creating dynamically the state class
             try:
                 # Import library
-                module = import_module("display." + class_name)
+                module = import_module("canvas." + class_name)
 
                 if class_name:
                     state_class = getattr(module, class_name)
