@@ -96,7 +96,7 @@ class HomeCanvas(BaseCanvas):
         b_h = 50
 
         # Creating and settign up first button : @TODO : In a future release it will be in the config file
-        button = Button(x=0, y=0, w=b_w, h=b_h, color=(0,0,0), text="Settings", master=self)
+        button = Button(x=0, y=0, w=b_w, h=b_h, color=(0,0,0), text="Settings", master=self, action=None)
 
         x = (self.get_width() - b_w) / 2
         y = self.get_height() - 110
@@ -108,7 +108,7 @@ class HomeCanvas(BaseCanvas):
         self.__buttons.append(button)
 
         # Creating and settign up second button
-        button = Button(x=0, y=0, w=b_w, h=b_h, color=(0, 0, 0), text="Play !", master=self)
+        button = Button(x=0, y=0, w=b_w, h=b_h, color=(0, 0, 0), text="Play !", master=self, action=self.set_game_state)
 
         x = (self.get_width() - b_w) / 2
         y = self.get_height() - 110 - b_h - 10
@@ -118,6 +118,8 @@ class HomeCanvas(BaseCanvas):
 
         self.__buttons.append(button)
 
+    def set_game_state(self):
+        self.set_state("game")
     def draw_buttons(self):
         """
         Method used to draw the button on the canvas.

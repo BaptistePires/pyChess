@@ -33,7 +33,7 @@ class Button(object):
     
     """
 
-    def __init__(self, x, y, w, h, color, text, master):
+    def __init__(self, x, y, w, h, color, text, master, action):
         """
         Constructor
         -----------------------------------------------------------------------
@@ -49,18 +49,18 @@ class Button(object):
         self.__color = color
         self.__text = text
         self.__master = master
-
+        self.__action = action
 
     def action(self):
         """
         Action that the button has to perform when he's clicked.
-        Need to be improved to have the action has an argument to the init.
         -----------------------------------------------------------------------
         Arguments : None.
         -----------------------------------------------------------------------
         Return : None.
         """
-        self.__master.set_state("game")
+        if self.__action is not None:
+            self.__action()
 
     def set_up(self):
         """

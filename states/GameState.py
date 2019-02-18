@@ -260,7 +260,6 @@ class GameState(BaseState):
                     # If the move is not avaible we reset put back the piece where it belongs
                     p.selected()
                     self.__piece_to_mouse = None
-                    print(p.getPos())
                     return False
         return False
 
@@ -316,13 +315,13 @@ class GameState(BaseState):
             # If it can then we return True and set the check_state of the player to
             # True and return to leave the method.
             if piece_moving.is_move_available(king_pos[0], king_pos[1], other_pl, cur_pl_pos, True):
-                if add_msg and piece_moving != None:
-                    text = "There is a check for the player " + str(player_nb) + " You can't do that"
+                if add_msg and piece_moving is not None:
+                    text = "This move is not allowed because of Check"
                     self._flash_msgs.append(
                         FlashMessage(size=12, text=text, x=0, y=0, code=WARNING_CODE, duration=4))
 
                 elif add_msg and piece_moving is None:
-                    text = "There is a check for the player " + str(player_nb)
+                    text = "Check"
                     self._flash_msgs.append(
                         FlashMessage(size=15, text=text, x=0, y=0, code=WARNING_CODE, duration=4))
 
@@ -339,53 +338,6 @@ class GameState(BaseState):
         else:
             self.__player2.set_check(False)
         return False
-
-    def TEST_AUTO(self):
-        """
-        !! THIS METHOD IS JUST A TEST AND IS NEVER CALLED. !!
-        :return:
-        """
-        # TEST TEST TEST #
-        if self.__player1.is_playing():
-
-            # If it's him then we can check what to do with his click
-            move_ok = False
-            while not move_ok:
-                i = randint(0, len(self.__player1.getPieces()) - 1)
-                # x = randint(0, 7)
-                # y = randint(0, 7)
-                x = 3
-                y = 0
-                flag_move = self.__player1.getPieces()[i].is_move_available(
-                    x=x, y=y, current_pl_pos=self.__player2.getPieces(),
-                    other_pl_pos=self.__player1.getPieces(), for_check=False)
-                if flag_move:
-                    self.__player1.getPieces()[i].new_pos(x, y)
-                    self.check_kill(x, y, self.__player1.getNumber())
-                    self.__player2.set_playing(True)
-                    self.__player1.set_playing(False)
-                    move_ok = True
-        else:
-            # If it's him then we can check what to do with his click
-            move_ok = False
-
-            while not move_ok:
-                i = randint(0, len(self.__player2.getPieces()) - 1)
-                x = randint(0, 7)
-                y = randint(0, 7)
-                flag_move = self.__player2.getPieces()[i].is_move_available(
-                    x=x, y=y, current_pl_pos=self.__player1.getPieces(),
-                    other_pl_pos=self.__player2.getPieces(), for_check=False)
-                if flag_move:
-                    self.__player2.getPieces()[i].new_pos(x, y)
-                    self.check_kill(x, y, self.__player2.getNumber())
-                    self.__player2.set_playing(False)
-                    self.__player1.set_playing(True)
-                    move_ok = True
-
-        sleep(0.001)
-        sleep(0.5)
-        # TEST TEST TEST
 
     # GETTERS SETTERS
     def getGrid(self):
