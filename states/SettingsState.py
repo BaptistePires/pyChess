@@ -56,6 +56,7 @@ class SettingsState(BaseState):
                 mx, my = pygame.mouse.get_pos()
                 for b in self._main.getButtons():
                     b.hover(mx, my)
+
 if __name__ == '__main__':
     pass
     

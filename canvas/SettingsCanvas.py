@@ -107,6 +107,38 @@ class SettingsCanvas(BaseCanvas):
         # Add it to the button list
         self._buttons.append(button)
 
+        button = Button(x=80, y=100, w=100, h=40, color=(0,0,0), text="Theme 1", master=self, action=self.change_theme_to_1)
+        button.set_up()
+        self._buttons.append(button)
+
+        button = Button(x=200, y=100, w=100, h=40, color=(0,0,205), text="Theme 2", master=self, action=self.change_theme_to_2)
+        button.set_up()
+        self._buttons.append(button)
+
+        button = Button(x=320, y=100, w=100, h=40, color=(34,139,34), text="Theme 2", master=self, action=self.change_theme_to_2)
+        button.set_up()
+        self._buttons.append(button)
+
+
+        x = (self.get_width() - 150) / 2
+        y =180
+        button = Button(x=x, y=y, w=150, h=60, color=(0,0,0), text="music", master=self,
+                        action=self.change_theme_to_2)
+        button.set_up()
+        self._buttons.append(button)
+
+        x = (self.get_width() - 150) / 2
+        y = 260
+        button = Button(x=x, y=y, w=150, h=60, color=(0, 0, 0), text="Credit", master=self,
+                        action=self.change_theme_to_2)
+        button.set_up()
+        self._buttons.append(button)
+
+    def change_theme_to_1(self):
+        pass
+
+    def change_theme_to_2(self):
+        pass
     def set_home_state(self):
         self.set_state("home")
 if __name__ == '__main__':
