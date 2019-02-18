@@ -14,7 +14,7 @@ from display.HomeCanvas import HomeCanvas
 import pygame
 from BasicObjects.MyBaseProcess import MyBaseProcess
 import time
-
+from importlib import import_module
 
 # Specific definitions
 
@@ -49,6 +49,7 @@ class GUI(MyBaseProcess):
         self.__main = main
         self.__canvas = None
         self.__icon = None
+        self.__current_state_name = ""
 
     def before_processing(self):
         """
@@ -88,6 +89,7 @@ class GUI(MyBaseProcess):
 
         while self._isRunning:
             # Draw everything on the GUI
+            self.set_up_canvas()
             self.__canvas.draws()
             self.__window.blit(self.__canvas, (0, 0))
             pygame.display.flip()
@@ -98,6 +100,39 @@ class GUI(MyBaseProcess):
 
 
             time.sleep(0.001)
+
+
+    def set_up_canvas(self):
+
+        current_state = self.__main.get_current_state()
+
+        if self.__current_state_name == current_state:
+            return
+
+        # Setting up the class name
+        class_name = current_state.capitalize() + "Canvas"
+
+        # There we check if the current state is not the same
+        if type(self.__canvas).__name__ != class_name:
+            # Creating dynamically the state class
+            try:
+                # Import library
+                module = import_module("display." + class_name)
+
+                if class_name:
+                    state_class = getattr(module, class_name)
+                    # Setting the current state got in parameters as the new state
+                    self.__canvas = state_class(gui=self, cfg=self._ownConfig["canvas"][current_state.lower()], master=self.__window,width=self._ownConfig["def_w"], height=self._ownConfig["def_h"])
+                    self.__canvas.set_up()
+                    # self.__state.launch()
+                    self.__current_state_name = current_state
+                    # self.__gui.set_game_canvas()
+
+            except Exception as exc:
+                print(
+                    "Can't import : {lib}".format(lib=class_name))
+                print(
+                    "Error message : {msg}".format(msg=exc.args))
 
     ### GETTERS / SETTERS ###
 

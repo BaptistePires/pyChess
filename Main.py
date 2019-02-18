@@ -45,6 +45,7 @@ class Main(object):
         self.__allConfig = None
         self.__gui = None
         self.__state = None
+        self.__current_state = ""
         init()
 
 
@@ -61,7 +62,7 @@ class Main(object):
 
         # Setting the first state of the game to home
         self.set_state("home")
-
+        self.__current_state = "home"
         # Loading GUI
         self.__gui = GUI(self.__allConfig["gui"], self)
 
@@ -123,23 +124,25 @@ class Main(object):
                 # Import library
                 module = import_module("states." + class_name)
 
-                # Get the class object
-                state_class = None
-
                 if class_name:
                     state_class = getattr(module, class_name)
                     # Setting the current state got in parameters as the new state
-
                     self.__state = state_class(main=self, cfg=self.__allConfig["states"][new_state.lower()])
                     self.__state.set_up()
                     self.__state.launch()
-                    self.__gui.set_game_canvas()
+                    # self.__gui.set_game_canvas()
+                    self.__current_state = new_state
 
             except Exception as exc:
                 print(
                     "Can't import : {lib}".format(lib=class_name))
                 print(
                     "Error message : {msg}".format(msg=exc.args))
+
+
+    def get_current_state(self):
+        return self.__current_state
+
 
     def getGrid(self):
         """
@@ -225,6 +228,8 @@ class Main(object):
         Return : self.__state.get_flash_msgs() [list]
         """
         return self.__state.get_flash_msgs()
+
+
 if __name__ == '__main__':
     main = Main()
     main.setUp()
