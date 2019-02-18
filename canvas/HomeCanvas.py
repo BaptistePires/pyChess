@@ -42,7 +42,6 @@ class HomeCanvas(BaseCanvas):
         super(HomeCanvas, self).__init__(width=width, height=height, gui=gui, master=master, cfg=cfg)
         self.__bg_color = (255, 255, 255)
         self.__title = None
-        self.__buttons = []
 
     def draws(self):
         """
@@ -96,7 +95,7 @@ class HomeCanvas(BaseCanvas):
         b_h = 50
 
         # Creating and settign up first button :
-        button = Button(x=0, y=0, w=b_w, h=b_h, color=(0,0,0), text="Settings", master=self, action=self.set_home_state)
+        button = Button(x=0, y=0, w=b_w, h=b_h, color=(0,0,0), text="Settings", master=self, action=self.set_settings_state)
 
         x = (self.get_width() - b_w) / 2
         y = self.get_height() - 110
@@ -105,7 +104,7 @@ class HomeCanvas(BaseCanvas):
         button.set_up()
 
         # Add it to the button list
-        self.__buttons.append(button)
+        self._buttons.append(button)
 
         # Creating and settign up second button
         button = Button(x=0, y=0, w=b_w, h=b_h, color=(0, 0, 0), text="Play !", master=self, action=self.set_game_state)
@@ -116,24 +115,13 @@ class HomeCanvas(BaseCanvas):
         button.setY(y)
         button.set_up()
 
-        self.__buttons.append(button)
+        self._buttons.append(button)
 
     def set_game_state(self):
         self.set_state("game")
 
-    def set_home_state(self):
-        self.set_state("winner")
-    def draw_buttons(self):
-        """
-        Method used to draw the button on the canvas.
-        -----------------------------------------------------------------------
-        Arguments : None.
-        -----------------------------------------------------------------------
-        Return : None.
-        """
-        for b in self.__buttons:
-            pygame.draw.rect(self, b.getColor(), b.getRect())
-            self.blit(b.getText().getText(), (b.getText().getX(), b.getText().getY()))
+    def set_settings_state(self):
+        self.set_state("settings")
 
     def draw_title(self):
         """
@@ -165,13 +153,7 @@ class HomeCanvas(BaseCanvas):
         """
         self.fill(self.__bg_color)
 
-    ### GETTERS / SETTERS ###
 
-    def getButtons(self):
-        return self.__buttons
-
-    def set_state(self, state):
-        self._master.set_state(state)
 
 if __name__ == '__main__':
     pass

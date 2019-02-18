@@ -10,18 +10,18 @@
           "height": -0
         }
       },
-      "home": {}
+      "home": {},
+      "settings": {}
     }
   },
   "states": {
-    "home": {
-      "eee": "rrr"
-    },
+    "home": {},
+    "settings": {},
     "game": {
       "pieces": {
         "king": {
           "number": 1,
-          "move": {}
+          "moves": {}
         },
         "queen": {
           "number": 1,

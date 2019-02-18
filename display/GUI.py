@@ -173,5 +173,6 @@ class GUI(MyBaseProcess):
     def get_theme(self):
         return self.__main.get_theme()
 
+
 if __name__ == '__main__':
     pass

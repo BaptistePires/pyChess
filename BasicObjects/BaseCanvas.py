@@ -49,6 +49,7 @@ class BaseCanvas(pygame.Surface):
         self._gui = gui
         self._master = master
         self._bg_img = None
+        self._buttons = []
 
     def draw_flash_messages(self):
         """
@@ -108,6 +109,27 @@ class BaseCanvas(pygame.Surface):
 
     def set_up_bc_img(self):
         pass
+
+    def draw_buttons(self):
+        """
+        Method used to draw the button on the canvas.
+        -----------------------------------------------------------------------
+        Arguments : None.
+        -----------------------------------------------------------------------
+        Return : None.
+        """
+        for b in self._buttons:
+            pygame.draw.rect(self, b.getColor(), b.getRect())
+            self.blit(b.getText().getText(), (b.getText().getX(), b.getText().getY()))
+
+
+
+    ### GETTERS / SETTERS ###
+
+    def getButtons(self):
+        return self._buttons
+    def set_state(self, state):
+        self._gui.set_state(state)
 
 
 if __name__ == '__main__':

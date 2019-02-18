@@ -1,5 +1,5 @@
 """
-    HomeState class
+    Class for #decrisption de la class
 """
 
 # Module informations
@@ -8,45 +8,37 @@ __author__ = u'Pires Baptiste (baptiste.pires37@gmail.com)'
 __date__ = u''
 __version__ = u'1.0.0'
 
+
 # Importations
 from BasicObjects.BaseState import BaseState
 import pygame
-
-
 # Specific definitions
 
 
 # Classes / Functions declaration
 
 
-class HomeState(BaseState):
+class SettingsState(BaseState):
     """
-    This is the HomeState of the game
+    Class description
     ---------------------------------------------------------------------------
     Attributes :
-        See BaseState class.
+    
     """
 
     def __init__(self, cfg, main):
         """
         Constructor
         -----------------------------------------------------------------------
-        Arguments : See BaseState class.
+        Arguments :
         -----------------------------------------------------------------------
         Return : None.
+        
         """
-        super(HomeState, self).__init__(cfg=cfg, main=main)
+        super(SettingsState, self).__init__(cfg=cfg, main=main)
+
 
     def handle_events(self, events):
-        """
-        This method is used to handle events from the GUI.
-        -----------------------------------------------------------------------
-        Arguments :
-            - events : event list from the GUI.
-        -----------------------------------------------------------------------
-        Return : None.
-        """
-
         # We go through all events
         for e in events:
 
@@ -64,13 +56,6 @@ class HomeState(BaseState):
                 mx, my = pygame.mouse.get_pos()
                 for b in self._main.getButtons():
                     b.hover(mx, my)
-
-    def launch(self):
-        pass
-
-    def set_up(self):
-        pass
-
-
 if __name__ == '__main__':
     pass
+    

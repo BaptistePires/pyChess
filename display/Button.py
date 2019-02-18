@@ -33,7 +33,7 @@ class Button(object):
     
     """
 
-    def __init__(self, x, y, w, h, color, text, master, action):
+    def __init__(self, x, y, w, h, color, text, master, action, hover_color=(154,154,154)):
         """
         Constructor
         -----------------------------------------------------------------------
@@ -46,7 +46,9 @@ class Button(object):
         self.__y = y
         self.__width = w
         self.__height = h
-        self.__color = color
+        self.__original_color = color
+        self.__color = self.__original_color
+        self.__hover_color = hover_color
         self.__text = text
         self.__master = master
         self.__action = action
@@ -75,7 +77,7 @@ class Button(object):
 
         # Setting up the text of it
         self.__text = TextToDisp(font=font,
-                                  size=20,
+                                  size=int(self.getWidth() / 10),
                                   text=self.__text,
                                   x=0, y=0, color=(255, 255, 255))
 
@@ -88,6 +90,12 @@ class Button(object):
         y = y_origin + (self.getHeight() - self.__text.getText().get_height()) / 2
         self.__text.setX(x)
         self.__text.setY(y)
+
+    def hover(self, mx, my):
+        if self.__x < mx < self.__x + self.__width and self.__y < my < self.__y + self.__height:
+            self.__color = self.__hover_color
+        else:
+            self.__color = self.__original_color
 
 # GETTERS / SETTERS
 
