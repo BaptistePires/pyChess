@@ -53,37 +53,35 @@ class King(Piece):
         delta_x = self.getX() - x
         delta_y = self.getY() - y
 
+
         # If the King move than more than 1 square
         if not -1 <= delta_x <= 1 or not -1 <= delta_y <= 1:
             return False
 
         next_pos = (0, 0)
         # Getting the next pos of the piece
-        if delta_x != 0 and delta_y == 0:
-            if delta_x < 0:
-                next_pos = (self.getX() + 1, self.getY())
-            else:
-                next_pos = (self.getX() - 1, self.getY())
-        elif delta_y != 0 and delta_x == 0:
-            if delta_y < 0:
-                next_pos = (self.getX(), self.getY() + 1)
-            else:
-                next_pos = (self.getX(), self.getY() - 1)
-        else:
-            if delta_x > 0 and delta_y > 0:
-                next_pos = (self.getX() - 1, self.getY() - 1)
-            elif delta_x > 0 and delta_y < 0:
-                next_pos = (self.getX() - 1, self.getY() + 1)
-            elif delta_x < 0 and delta_y > 0:
-                next_pos = (self.getX() + 1, self.getY() - 1)
-            elif delta_x < 0 and delta_y < 0:
-                next_pos = (self.getX() + 1, self.getY() + 1)
+        print(delta_x, delta_y)
 
-        # If there is an ally in the next pos
-        if next_pos in current_pl_pos:
+        if delta_x > 0:
+            if delta_y == 0:
+                next_pos = (self.getX() - 1, self.getY())
+            elif delta_y > 0:
+                next_pos = (self.getX() - 1, self.getY() - 1)
+            elif delta_y < 0:
+                next_pos = (self.getX() - 1, self.getY() + 1)
+        else:
+            if delta_y == 0:
+                next_pos = (self.getX() + 1, self.getY())
+            elif delta_y > 0:
+                next_pos = (self.getX() + 1, self.getY() - 1)
+            elif delta_y < 0:
+                next_pos = (self.getX() + 1, self.getY() + 1)
+            print("right")
+        print(next_pos)
+        if next_pos in current_pl_pos or next_pos == (0,0):
             return False
         else:
-            return False
+            return True
 
 
 if __name__ == '__main__':

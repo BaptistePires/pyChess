@@ -159,7 +159,6 @@ class GameState(BaseState):
         -----------------------------------------------------------------------
         Return : None.
         """
-
         # Event from pygame
         for event in events:
             # Window quit event
@@ -235,7 +234,7 @@ class GameState(BaseState):
 
             # We use x, y, mx, my to check if the current piece of the loop is being clicked and if there is no piece already
             # selected
-            if mx > x and mx < x + p.getWidth() and my > y and my < y + p.getWidth() and self.__piece_to_mouse == None and p.is_alive():
+            if mx > x and mx < x + p.getWidth() and my > y and my < y + p.getWidth() and self.__piece_to_mouse == None:
                 # If so, we change the state of the piece
                 p.selected()
                 # And we keep a reference to the piece
@@ -243,8 +242,9 @@ class GameState(BaseState):
                 return False
             # Same than above but with a piece already selected, so we need to check if the square is empty or if the is
             # an enemy on it
-            elif mx > x and mx < x + p.getWidth() and my > y and my < y + p.getWidth() and self.__piece_to_mouse != None and p.is_alive():
+            elif mx > x and mx < x + p.getWidth() and my > y and my < y + p.getWidth() and self.__piece_to_mouse != None:
                 self.__piece_to_mouse.selected()
+                self.__piece_to_mouse = None
                 return False
 
             # If there is already a piece selected
@@ -269,7 +269,7 @@ class GameState(BaseState):
                         self.__piece_to_mouse = None
                         return True
 
-                    # If the move is not avaible we reset put back the piece where it belongs
+                    # If the move is not available we reset and put back the piece where it belongs
                     p.selected()
                     self.__piece_to_mouse = None
                     return False
@@ -327,6 +327,7 @@ class GameState(BaseState):
             # If it can then we return True and set the check_state of the player to
             # True and return to leave the method.
             if piece_moving.is_move_available(king_pos[0], king_pos[1], other_pl, cur_pl_pos, True):
+                print(piece_moving)
                 if add_msg and piece_moving is not None:
                     text = "This move is not allowed because of Check"
                     self._flash_msgs.append(
