@@ -13,6 +13,7 @@ from BasicObjects.BaseCanvas import BaseCanvas
 import pygame
 from os import sep
 from display.Button import Button
+from canvas.LogCanvas import LogCanvas
 
 
 # Specific definitions
@@ -43,6 +44,7 @@ class GameCanvas(BaseCanvas):
         self._height += self._ownConfig["offsets"]["height"]
         self.__square_size = 62.5
         self.__labels = []
+        self.__log_canvas = None
 
     def draws(self):
         """
@@ -57,7 +59,18 @@ class GameCanvas(BaseCanvas):
         self.draw_entities()
         self.draw_flash_messages()
         self.draw_buttons()
+        self.draw_log_canvas()
 
+    def draw_log_canvas(self):
+        self.blit(self.__log_canvas, (170, 510))
+        self.__log_canvas.draws()
+
+
+    def check_if_string_is_on_screen(self):
+
+        for string in self.get_strings():
+            if string.getY() > self._height:
+                self._strings.remove(string)
     def set_up(self):
         """
         Setting up the images and everything else
@@ -66,16 +79,16 @@ class GameCanvas(BaseCanvas):
         self.set_up_bc_img()
         self.set_up_entites_img()
         self.set_up_buttons()
+        self.__log_canvas = LogCanvas(self, cfg=None, width=320, height=80,gui=self._gui, bg_color=(169,169,169))
+        self.__log_canvas.add_msg("Game started.")
 
     def set_up_bc_img(self):
         """
         Method used to load background image
-        :return:
+        :return: None
         """
         img = pygame.image.load(
             "res" + sep + "img" + sep + "grids" + sep + "chess_plate_" + str(self._gui.get_grid_choice()) + ".png")
-        print("res" + sep + "img" + sep + "grids" + sep + "chess_plate_" + str(self._gui.get_grid_choice()) + ".png")
-
         self._bg_img = pygame.transform.scale(img, (self._width, self._height))
 
     def set_up_entites_img(self):
@@ -130,14 +143,27 @@ class GameCanvas(BaseCanvas):
                 self.blit(label, ((j * self.__square_size) + 7, (i * self.__square_size) + 7))
 
     def set_up_buttons(self):
-        bw, bh = 170, 40
+        bw, bh = 150, 35
 
         # Creating and settign up first button :
         button = Button(x=0, y=0, width=bw, height=bh, color=(0, 0, 0), text="Home", master=self,
                         action=self.set_home_state)
 
-        x = (self.get_width() - bw) / 2
-        y = self.get_height() - 60
+        x = 10
+        y = 510
+        button.set_x(x)
+        button.setY(y)
+        button.set_up()
+
+        # Add it to the button list
+        self._buttons.append(button)
+
+        # Creating and settign up first button :
+        button = Button(x=0, y=0, width=bw, height=bh, color=(0, 0, 0), text="Settings", master=self,
+                        action=self.set_settings_state)
+
+        x = 10
+        y = 555
         button.set_x(x)
         button.setY(y)
         button.set_up()
@@ -148,6 +174,11 @@ class GameCanvas(BaseCanvas):
     def set_home_state(self):
         self._gui.set_state("home")
 
+    def set_settings_state(self):
+        self._gui.set_state("settings")
+
+    def add_msg_to_logger(self, msg):
+        self.__log_canvas.add_msg(msg)
 
 if __name__ == '__main__':
     pass

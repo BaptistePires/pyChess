@@ -154,14 +154,6 @@ class SettingsCanvas(BaseCanvas):
 
         self._strings.append(new_str)
 
-
-    def draw_strings(self):
-
-        for string in self._strings:
-            self.blit(string.getText(),
-                      (string.getX(), string.getY()))
-
-
     def set_up_clickable_images(self):
         """
         This method is used to set up clickable image. It will display to the

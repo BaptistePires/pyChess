@@ -182,8 +182,6 @@ class GameState(BaseState):
                     played = self.check_clicked_pieces(self.__player1.getPieces(), mx, my, self.__player1.getNumber())
                     if played:
                         # self.check_check(1)
-                        self._flash_msgs.append(FlashMessage(size=20, text="Player 1 Played", x=0, y=0, code=INFO_CODE,
-                                                             font="res/font/good_time.ttf"))
 
                         # Change playing player
                         self.__player1.set_playing(False)
@@ -193,9 +191,6 @@ class GameState(BaseState):
                 else:
                     played = self.check_clicked_pieces(self.__player2.getPieces(), mx, my, self.__player2.getNumber())
                     if played:
-                        self._flash_msgs.append(FlashMessage(size=20, text="Player 2 Played", x=0, y=0, code=INFO_CODE,
-                                                             font="res/font/good_time.ttf"))
-
                         # Change playing player
                         self.__player2.set_playing(False)
                         self.__player1.set_playing(True)
@@ -267,6 +262,7 @@ class GameState(BaseState):
                         p.selected()
                         # Remove the reference
                         self.__piece_to_mouse = None
+                        self.add_msg_to_logger("Player " + str(player_nb) + " moved " + str(p.code_to_str()).capitalize() + " to " + str(x) + "," + str(y) + ".")
                         return True
 
                     # If the move is not available we reset and put back the piece where it belongs
@@ -352,6 +348,8 @@ class GameState(BaseState):
             self.__player2.set_check(False)
         return False
 
+    def add_msg_to_logger(self, msg):
+        self._main.add_msg_to_logger(msg)
     # GETTERS SETTERS
     def get_grid(self):
         return self.__grid
@@ -417,6 +415,10 @@ class GameState(BaseState):
                 if piece.getX() == x and piece.getY() == y and piece.getPlayerNumber() != player_nb:
                     # If there is a kill then we leave the loop
                     self.kill_piece(piece.getPlayerNumber(), i)
+                    self.add_msg_to_logger(
+                        "Player " + str(player_nb) + " killed " + str(piece.code_to_str()).capitalize() + " on " + str(
+                            x) + "," + str(y) + ".")
+
                     break
 
     def kill_piece(self, nb_player, piece):
@@ -433,7 +435,6 @@ class GameState(BaseState):
             self.__player1.kill_piece(piece)
         else:
             self.__player2.kill_piece(piece)
-
 
     def get_theme(self):
         return self._main.get_theme()

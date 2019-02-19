@@ -32,7 +32,7 @@ class FlashMessage(TextToDisp):
                         should be displayed
     """
 
-    def __init__(self, size, text, x, y, code, color=None, font="res/font/Montserrat-Regular.ttf", duration=1):
+    def __init__(self, size, text, x, y, code, color=None, font="res/font/GOOD_DADDY.otf", duration=1):
         """
         Constructor
         -----------------------------------------------------------------------

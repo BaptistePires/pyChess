@@ -55,7 +55,10 @@ class TextToDisp(object):
         -----------------------------------------------------------------------
         Return : None.
         """
-        font = pygame.font.Font(self.getFont(), self.getSize())
+        try:
+            font = pygame.font.Font(self.getFont(), self.getSize())
+        except:
+            font = pygame.font.SysFont(self.getFont(), self.getSize())
 
         self.__text = font.render(self.getText(), True, self.getColor())
 

@@ -74,7 +74,7 @@ class GUI(MyBaseProcess):
         # Setting up the icon and the title
         pygame.display.set_icon(pygame.transform.scale(pygame.image.load("res/img/icon.png"), (32, 32)))
         pygame.display.set_caption('pyChess')
-        
+
         # Init the home canvas
         self.__canvas = HomeCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self,
                                    cfg=self._ownConfig["canvas"]["home"])
@@ -141,6 +141,8 @@ class GUI(MyBaseProcess):
                 print(
                     "Error message : {msg}".format(msg=exc.args))
 
+    def add_msg_to_logger(self, msg):
+        self.__canvas.add_msg_to_logger(msg=msg)
     ### GETTERS / SETTERS ###
 
     def getWidth(self):
@@ -239,8 +241,17 @@ class GUI(MyBaseProcess):
 
         elif color_changed:
             self.__main.add_flash_msg(
-                FlashMessage(size=15, text="Color changed for player : " + str(nb), x=0, y=0, code=INFO_CODE,
+                FlashMessage(size=15, text="Color changed for player : " + self.int_to_string(nb), x=0, y=0, code=INFO_CODE,
                              duration=2))
+
+    @staticmethod
+    def int_to_string(number):
+        if number == 1:
+            return "one"
+        elif number == 2:
+            return "two"
+        else:
+            return "zero"
 
     def get_grid_choice(self):
         return self.__grid_choice

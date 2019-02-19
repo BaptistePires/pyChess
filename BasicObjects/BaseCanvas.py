@@ -75,9 +75,9 @@ class BaseCanvas(pygame.Surface):
 
             # Setting Y pos of the msg
             if i == 0:
-                y = msg.getText().get_height() + (20 * i) + msgs[i].getText().get_height()
+                y = msg.getText().get_height() + (30 * i) + msgs[i].getText().get_height()
             else:
-                y = msg.getText().get_height() + (40 * i) + msgs[i - 1].getText().get_height()
+                y = msg.getText().get_height() + (50 * i) + msgs[i - 1].getText().get_height()
 
             msg.setY(y)
 
@@ -127,6 +127,11 @@ class BaseCanvas(pygame.Surface):
         for b in self._buttons:
             pygame.draw.rect(self, b.getColor(), b.getRect())
             self.blit(b.getText().getText(), (b.getText().getX(), b.getText().getY()))
+
+    def draw_strings(self):
+        for string in self._strings:
+            self.blit(string.getText(),
+                      (string.getX(), string.getY()))
 
     ### GETTERS / SETTERS ###
 

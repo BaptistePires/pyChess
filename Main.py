@@ -245,7 +245,8 @@ class Main(object):
     def add_flash_msg(self, msg):
         self.__state.add_msg(msg=msg)
 
-
+    def add_msg_to_logger(self, msg):
+        self.__gui.add_msg_to_logger(msg)
 if __name__ == '__main__':
     main = Main()
     main.set_up()
