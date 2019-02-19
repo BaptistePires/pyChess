@@ -317,6 +317,11 @@ class GameState(BaseState):
             # transfer the data between lists
             cur_pl_pos = temp_pl_pos
 
+            if piece_moving.getCode() == KING_CODE:
+                king_pos = (x,y)
+
+
+        # save_king_pos = king_pos
         # Then we go through all the other pieces to check if he can reach the king
         for piece_moving in other_pl:
 
@@ -418,7 +423,6 @@ class GameState(BaseState):
                     self.add_msg_to_logger(
                         "Player " + str(player_nb) + " killed " + str(piece.code_to_str()).capitalize() + " on " + str(
                             x) + "," + str(y) + ".")
-
                     break
 
     def kill_piece(self, nb_player, piece):

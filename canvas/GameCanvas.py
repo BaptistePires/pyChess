@@ -80,6 +80,7 @@ class GameCanvas(BaseCanvas):
         self.set_up_entites_img()
         self.set_up_buttons()
         self.__log_canvas = LogCanvas(self, cfg=None, width=320, height=80,gui=self._gui, bg_color=(169,169,169))
+        self.__log_canvas.set_up()
         self.__log_canvas.add_msg("Game started.")
 
     def set_up_bc_img(self):

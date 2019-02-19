@@ -13,6 +13,7 @@ __version__ = u'1.0.0'
 from BasicObjects.BaseCanvas import BaseCanvas
 from display.TextToDisp import TextToDisp
 from time import strftime
+import pygame
 # Specific definitions
 
 
@@ -21,34 +22,46 @@ from time import strftime
 
 class LogCanvas(BaseCanvas):
     """
-    Class description
+    This class is a logger that is used to display info to the user.
     ---------------------------------------------------------------------------
-    Attributes :
-    
     """
 
     def __init__(self, master, width, height, gui, cfg, bg_color):
         """
         Constructor
         -----------------------------------------------------------------------
-        Arguments :
+        Arguments : See super class.
+            - bg_color : Background color of the logger
         -----------------------------------------------------------------------
         Return : None.
         """
         super(LogCanvas, self).__init__(width=width, height=height, gui=gui, master=master, cfg=cfg)
         self.__bg_color = bg_color
+        self.__bg_borders = None
+        self.__bg = None
 
     def set_up(self):
-        pass
+        self.set_up_bg()
 
     def draws(self):
         self.draw_bg()
         self.draw_strings()
         self.check_if_string_is_on_screen()
-        print(len(self.get_strings()))
-    def draw_bg(self):
-        self.fill(self.__bg_color)
 
+    def draw_border(self):
+        pygame.draw.rect(self, (0,0,0),
+                         pygame.Rect(0, 0, self.get_width(), self.get_height()))
+    def draw_bg(self):
+        pygame.draw.rect(self,  (0,0,0),
+                         self.__bg_borders)
+
+        pygame.draw.rect(self,  self.__bg_color,
+                         self.__bg)
+
+    def set_up_bg(self):
+        self.__bg_borders = pygame.Rect(0, 0, self.get_width(), self.get_height())
+
+        self.__bg = pygame.Rect( 2,2, self.get_width() - 4, self.get_height() - 4)
     def draw_strings(self):
         if len(self.get_strings()) > 0:
             for i, string in enumerate(reversed(self.get_strings())):
