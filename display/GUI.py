@@ -71,6 +71,10 @@ class GUI(MyBaseProcess):
         # Init the window
         self.__window = pygame.display.set_mode((self._ownConfig["def_w"], self._ownConfig["def_h"]))
 
+        # Setting up the icon and the title
+        pygame.display.set_icon(pygame.transform.scale(pygame.image.load("res/img/icon.png"), (32, 32)))
+        pygame.display.set_caption('pyChess')
+        
         # Init the home canvas
         self.__canvas = HomeCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self,
                                    cfg=self._ownConfig["canvas"]["home"])
