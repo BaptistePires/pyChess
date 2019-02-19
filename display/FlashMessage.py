@@ -58,7 +58,7 @@ class FlashMessage(TextToDisp):
         if self.__code == INFO_CODE:
             return (25,25,112)
         elif self.__code == WARNING_CODE:
-            return 	(255,215,0)
+            return 	(255,140,0)
         elif self.__code == DANGER_CODE:
             return (0,0,0)
 
@@ -80,6 +80,8 @@ class FlashMessage(TextToDisp):
 
     def get_font(self):
         return self.__font
+    def set_x(self, x):
+        self._x = x
 
 if __name__ == '__main__':
     pass

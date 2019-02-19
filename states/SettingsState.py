@@ -1,5 +1,5 @@
 """
-    Class for #decrisption de la class
+    Setting stae class
 """
 
 # Module informations
@@ -20,25 +20,32 @@ import pygame
 
 class SettingsState(BaseState):
     """
-    Class description
+    Setting state class
     ---------------------------------------------------------------------------
     Attributes :
-    
+        See super class.
     """
 
     def __init__(self, cfg, main):
         """
         Constructor
         -----------------------------------------------------------------------
-        Arguments :
+        Arguments : See super class.
         -----------------------------------------------------------------------
         Return : None.
-        
         """
         super(SettingsState, self).__init__(cfg=cfg, main=main)
 
 
     def handle_events(self, events):
+        """
+        See super class.
+        -----------------------------------------------------------------------
+        Arguments : See super class.
+        -----------------------------------------------------------------------
+        Return : See super class.
+        """
+        super(SettingsState, self).handle_events(events=events)
         # We go through all events
         for e in events:
 
@@ -49,13 +56,14 @@ class SettingsState(BaseState):
                 mx, my = pygame.mouse.get_pos()
 
                 # We check if there is a button under the click
-                for b in self._main.getButtons():
-                    if mx > b.getX() and mx < b.getX() + b.getWidth() and my > b.getY() and my < b.getY() + b.getHeight():
-                        b.action()
+                for widget in self._main.get_buttons() + self._main.get_clickable_images():
+                    if mx > widget.get_x() and mx < widget.get_x() + widget.get_width() and my > widget.get_y() and my < widget.get_y() + widget.get_height():
+                        widget.action()
             else:
                 mx, my = pygame.mouse.get_pos()
-                for b in self._main.getButtons():
-                    b.hover(mx, my)
+                for widget in self._main.get_buttons() + self._main.get_clickable_images():
+                    widget.hover(mx, my)
+
 
 if __name__ == '__main__':
     pass

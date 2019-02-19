@@ -92,6 +92,8 @@ class Player(BaseObject):
     def get_theme(self):
         return self.__game.get_theme()
 
+    def get_piece_color_choice(self, nb):
+        return self.__game.get_piece_color_choice(nb)
 
 if __name__ == '__main__':
     pass

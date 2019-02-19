@@ -95,11 +95,11 @@ class HomeCanvas(BaseCanvas):
         b_h = 50
 
         # Creating and settign up first button :
-        button = Button(x=0, y=0, w=b_w, h=b_h, color=(0,0,0), text="Settings", master=self, action=self.set_settings_state)
+        button = Button(x=0, y=0, width=b_w, height=b_h, color=(0,0,0), text="Settings", master=self, action=self.set_settings_state)
 
         x = (self.get_width() - b_w) / 2
         y = self.get_height() - 110
-        button.setX(x)
+        button.set_x(x)
         button.setY(y)
         button.set_up()
 
@@ -107,11 +107,11 @@ class HomeCanvas(BaseCanvas):
         self._buttons.append(button)
 
         # Creating and settign up second button
-        button = Button(x=0, y=0, w=b_w, h=b_h, color=(0, 0, 0), text="Play !", master=self, action=self.set_game_state)
+        button = Button(x=0, y=0, width=b_w, height=b_h, color=(0, 0, 0), text="Play !", master=self, action=self.set_game_state)
 
         x = (self.get_width() - b_w) / 2
         y = self.get_height() - 110 - b_h - 10
-        button.setX(x)
+        button.set_x(x)
         button.setY(y)
         button.set_up()
 

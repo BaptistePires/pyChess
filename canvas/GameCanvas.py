@@ -30,7 +30,7 @@ class GameCanvas(BaseCanvas):
                             a next release.
     """
 
-    def __init__(self, master, width, height, gui,cfg):
+    def __init__(self, master, width, height, gui, cfg):
         """
         Constructor
         -----------------------------------------------------------------------
@@ -44,7 +44,6 @@ class GameCanvas(BaseCanvas):
         self.__square_size = 62.5
         self.__labels = []
 
-
     def draws(self):
         """
         Method used to draw all images needed
@@ -53,7 +52,7 @@ class GameCanvas(BaseCanvas):
         -----------------------------------------------------------------------
         Return : None.
         """
-        self.fill((255,255,255))
+        self.fill((255, 255, 255))
         self.draw_grid()
         self.draw_entities()
         self.draw_flash_messages()
@@ -64,15 +63,19 @@ class GameCanvas(BaseCanvas):
         Setting up the images and everything else
         :return:
         """
-        self.set_up_entites_img()
         self.set_up_bc_img()
+        self.set_up_entites_img()
         self.set_up_buttons()
+
     def set_up_bc_img(self):
         """
         Method used to load background image
         :return:
         """
-        img = pygame.image.load("res" + sep + "img" + sep + "theme_" + str(self._gui.get_theme()) + sep + "chess_plate.png")
+        img = pygame.image.load(
+            "res" + sep + "img" + sep + "grids" + sep + "chess_plate_" + str(self._gui.get_grid_choice()) + ".png")
+        print("res" + sep + "img" + sep + "grids" + sep + "chess_plate_" + str(self._gui.get_grid_choice()) + ".png")
+
         self._bg_img = pygame.transform.scale(img, (self._width, self._height))
 
     def set_up_entites_img(self):
@@ -80,8 +83,8 @@ class GameCanvas(BaseCanvas):
         Method used to load entities img
         :return:
         """
-        for p_player in self._gui.getPieces():
-            for  piece in p_player:
+        for p_player in self._gui.get_pieces():
+            for piece in p_player:
                 piece.set_img()
 
     def draw_entities(self):
@@ -90,7 +93,7 @@ class GameCanvas(BaseCanvas):
         :return:
         """
         # We get all the pieces of the players
-        players_pieces = self._gui.getPieces()
+        players_pieces = self._gui.get_pieces()
 
         # For each player
         for p_player in players_pieces:
@@ -105,14 +108,13 @@ class GameCanvas(BaseCanvas):
                 else:
                     # If the piece is selected, then we need to make it follow the mouse
                     self.blit(piece.getImg(), (
-                    int(pygame.mouse.get_pos()[0] - (62.5 / 2)), int(pygame.mouse.get_pos()[1] - (62.5 / 2))))
+                        int(pygame.mouse.get_pos()[0] - (62.5 / 2)), int(pygame.mouse.get_pos()[1] - (62.5 / 2))))
 
     def draw_grid(self):
         """
         Method used to draw the grid
         """
         self.blit(self._bg_img, (0, 0))
-
 
     def disp_case_i(self, grid):
         """
@@ -127,17 +129,16 @@ class GameCanvas(BaseCanvas):
                 label = myfont.render("[" + str(j) + ";" + str(i) + ']', 1, (0, 0, 0))
                 self.blit(label, ((j * self.__square_size) + 7, (i * self.__square_size) + 7))
 
-
     def set_up_buttons(self):
         bw, bh = 170, 40
 
         # Creating and settign up first button :
-        button = Button(x=0, y=0, w=bw, h=bh, color=(0, 0, 0), text="Home", master=self,
+        button = Button(x=0, y=0, width=bw, height=bh, color=(0, 0, 0), text="Home", master=self,
                         action=self.set_home_state)
 
         x = (self.get_width() - bw) / 2
         y = self.get_height() - 60
-        button.setX(x)
+        button.set_x(x)
         button.setY(y)
         button.set_up()
 
@@ -146,5 +147,7 @@ class GameCanvas(BaseCanvas):
 
     def set_home_state(self):
         self._gui.set_state("home")
+
+
 if __name__ == '__main__':
     pass

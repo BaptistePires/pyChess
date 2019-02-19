@@ -12,13 +12,14 @@ __version__ = u'1.0.0'
 # Importations
 from display.TextToDisp import TextToDisp
 import pygame
+from BasicObjects.BaseWidget import BaseWidget
 # Specific definitions
 
 
 # Classes / Functions declaration
 
 
-class Button(object):
+class Button(BaseWidget):
     """
     Class description
     ---------------------------------------------------------------------------
@@ -33,7 +34,7 @@ class Button(object):
     
     """
 
-    def __init__(self, x, y, w, h, color, text, master, action, hover_color=(154,154,154)):
+    def __init__(self, x, y, width, height, color, text, master, action, hover_color=(154,154,154)):
         """
         Constructor
         -----------------------------------------------------------------------
@@ -42,27 +43,12 @@ class Button(object):
         Return : None.
         
         """
-        self.__x = x
-        self.__y = y
-        self.__width = w
-        self.__height = h
+        super(Button, self).__init__(x=x, y=y, width=width, height=height, action=action)
         self.__original_color = color
         self.__color = self.__original_color
         self.__hover_color = hover_color
         self.__text = text
         self.__master = master
-        self.__action = action
-
-    def action(self):
-        """
-        Action that the button has to perform when he's clicked.
-        -----------------------------------------------------------------------
-        Arguments : None.
-        -----------------------------------------------------------------------
-        Return : None.
-        """
-        if self.__action is not None:
-            self.__action()
 
     def set_up(self):
         """
@@ -77,36 +63,29 @@ class Button(object):
 
         # Setting up the text of it
         self.__text = TextToDisp(font=font,
-                                  size=int(self.getWidth() / 10),
+                                  size=int(self.get_width() / 10),
                                   text=self.__text,
                                   x=0, y=0, color=(255, 255, 255))
 
         self.__text.set_up()
 
         # Setting up x and y position of the text
-        origin = self.getX()
-        x = origin + (self.getWidth() - self.__text.getText().get_width()) / 2
-        y_origin = self.getY()
-        y = y_origin + (self.getHeight() - self.__text.getText().get_height()) / 2
+        origin = self.get_x()
+        x = origin + (self.get_width() - self.__text.getText().get_width()) / 2
+        y_origin = self.get_y()
+        y = y_origin + (self.get_height() - self.__text.getText().get_height()) / 2
         self.__text.setX(x)
         self.__text.setY(y)
 
     def hover(self, mx, my):
-        if self.__x < mx < self.__x + self.__width and self.__y < my < self.__y + self.__height:
+        if self._x < mx < self._x + self._width and self._y < my < self._y + self._height:
             self.__color = self.__hover_color
         else:
             self.__color = self.__original_color
 
 # GETTERS / SETTERS
-
-    def setX(self, x):
-        self.__x = x
-
-    def setY(self, y):
-        self.__y = y
-
     def getRect(self):
-        return pygame.Rect(self.__x, self.__y, self.__width, self.__height)
+        return pygame.Rect(self._x, self._y, self._width, self._height)
 
     def getColor(self):
         return self.__color
@@ -114,17 +93,6 @@ class Button(object):
     def getText(self):
         return self.__text
 
-    def getX(self):
-        return self.__x
-
-    def getY(self):
-        return self.__y
-
-    def getWidth(self):
-        return self.__width
-
-    def getHeight(self):
-        return self.__height
 
 
 if __name__ == '__main__':

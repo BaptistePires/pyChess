@@ -171,8 +171,8 @@ class GameState(BaseState):
                 mx, my = pygame.mouse.get_pos()
 
                 # Checking button click
-                for b in self._main.getButtons():
-                    if mx > b.getX() and mx < b.getX() + b.getWidth() and my > b.getY() and my < b.getY() + b.getHeight():
+                for b in self._main.get_buttons():
+                    if mx > b.get_x() and mx < b.get_x() + b.get_width() and my > b.get_y() and my < b.get_y() + b.get_height():
                         b.action()
 
                 # Checking if it's the first player is playing
@@ -204,7 +204,7 @@ class GameState(BaseState):
                 # Getting mouse coordinates
                 mx, my = pygame.mouse.get_pos()
 
-                for b in self._main.getButtons():
+                for b in self._main.get_buttons():
                     b.hover(mx,my)
 
     def check_clicked_pieces(self, pieces, mx, my, player_nb):
@@ -224,7 +224,7 @@ class GameState(BaseState):
             - False : If not
         """
         # We players's pos
-        current_pl_pos, other_pl_pos = self.getPlayersPos(player_nb)
+        current_pl_pos, other_pl_pos = self.get_players_pos(player_nb)
 
         # There we go for each piece of the player to check if he clicked on one
         for p in pieces:
@@ -353,13 +353,13 @@ class GameState(BaseState):
         return False
 
     # GETTERS SETTERS
-    def getGrid(self):
+    def get_grid(self):
         return self.__grid
 
-    def getPieces(self):
+    def get_pieces(self):
         return self.__player1.getPieces(), self.__player2.getPieces()
 
-    def getPlayersPos(self, player_nb):
+    def get_players_pos(self, player_nb):
         """
         Method used to get the player pieces pos
         -----------------------------------------------------------------------
@@ -455,6 +455,8 @@ class GameState(BaseState):
         y = int(y / 62.5)
         return x, y
 
+    def get_piece_color_choice(self, nb):
+        return self._main.get_piece_color_choice(nb)
 
 if __name__ == '__main__':
     g = GameState(None, None)

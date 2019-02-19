@@ -9,10 +9,10 @@ __author__ = u'Pires Baptiste (baptiste.pires37@gmail.com)'
 __date__ = u''
 __version__ = u'1.0.0'
 
-
 # Importations
 import pygame
 from datetime import datetime
+
 
 # Specific definitions
 
@@ -50,6 +50,8 @@ class BaseCanvas(pygame.Surface):
         self._master = master
         self._bg_img = None
         self._buttons = []
+        self._strings = []
+        self._clickable_images = []
 
     def draw_flash_messages(self):
         """
@@ -69,7 +71,7 @@ class BaseCanvas(pygame.Surface):
                 msg.set_first_display(datetime.now())
                 msg.set_up()
                 x = (self._width - msg.getText().get_width()) / 2
-                msg.setX(x)
+                msg.set_x(x)
 
             # Setting Y pos of the msg
             if i == 0:
@@ -84,8 +86,12 @@ class BaseCanvas(pygame.Surface):
 
             if time_delta.total_seconds() <= msg.getDuration():
                 # Borders and background
-                pygame.draw.rect(self, msg.get_color_by_code(), pygame.Rect(msg.getX() - 3, msg.getY() - 3, msg.getText().get_width() + 6, msg.getText().get_height() + 6))
-                pygame.draw.rect(self, (255, 255, 255), pygame.Rect(msg.getX(), msg.getY(), msg.getText().get_width(), msg.getText().get_height()))
+                pygame.draw.rect(self, msg.get_color_by_code(),
+                                 pygame.Rect(msg.getX() - 11, msg.getY() - 11, msg.getText().get_width() + 20,
+                                             msg.getText().get_height() + 20))
+                pygame.draw.rect(self, (255, 255, 255),
+                                 pygame.Rect(msg.getX() - 7, msg.getY() - 7, msg.getText().get_width() + 15,
+                                             msg.getText().get_height() + 15))
 
                 # The text
                 self.blit(msg.getText(),
@@ -122,16 +128,20 @@ class BaseCanvas(pygame.Surface):
             pygame.draw.rect(self, b.getColor(), b.getRect())
             self.blit(b.getText().getText(), (b.getText().getX(), b.getText().getY()))
 
-
-
     ### GETTERS / SETTERS ###
 
-    def getButtons(self):
+    def get_buttons(self):
         return self._buttons
+
     def set_state(self, state):
         self._gui.set_state(state)
+
+    def get_clickable_images(self):
+        return self._clickable_images
+
+    def get_strings(self):
+        return self._strings
 
 
 if __name__ == '__main__':
     pass
-    

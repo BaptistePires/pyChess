@@ -9,15 +9,16 @@ __author__ = u'Pires Baptiste (baptiste.pires37@gmail.com)'
 __date__ = u'27/01/2019'
 __version__ = u'1.0.0'
 
-
 # Importations
 from json import load
 from display.GUI import GUI
 from states.GameState import GameState
 from importlib import import_module
 from pygame import init
+
 # Specific definitions
 IMG_PATH = "res/img"
+
 
 # Classes / Functions declaration
 
@@ -49,8 +50,7 @@ class Main(object):
         self.__theme = 1
         init()
 
-
-    def setUp(self):
+    def set_up(self):
         """
         This method is used to set up everything at the start of the game
         -----------------------------------------------------------------------
@@ -59,14 +59,13 @@ class Main(object):
         Return : None.
         """
         # Loading the general config of the game
-        self.loadConfig()
+        self.load_config()
 
         # Setting the first state of the game to home
         self.set_state("home")
         self.__current_state = "home"
         # Loading GUI
         self.__gui = GUI(self.__allConfig["gui"], self)
-
 
     def launch(self):
         """
@@ -78,7 +77,7 @@ class Main(object):
         """
         self.__gui.start()
 
-    def loadConfig(self):
+    def load_config(self):
         """
         This method load the configuration from the ./config.json file
         -----------------------------------------------------------------------
@@ -89,7 +88,6 @@ class Main(object):
         cfg_file = open("./config.json")
         self.__allConfig = load(cfg_file, encoding='utf-8')
         cfg_file.close()
-
 
     def launch_game(self):
         """
@@ -104,7 +102,7 @@ class Main(object):
         self.__state = GameState(self.__allConfig["game"], self)
         self.__state.launch()
 
-# GETTERS SETTERS
+    # GETTERS SETTERS
 
     def set_state(self, new_state):
         """
@@ -140,12 +138,10 @@ class Main(object):
                 print(
                     "Error message : {msg}".format(msg=exc.args))
 
-
     def get_current_state(self):
         return self.__current_state
 
-
-    def getGrid(self):
+    def get_grid(self):
         """
         This method return a list that is a grid
         -----------------------------------------------------------------------
@@ -153,9 +149,9 @@ class Main(object):
         -----------------------------------------------------------------------
         Return : self.__state.getGrid() [list]
         """
-        return self.__state.getGrid()
+        return self.__state.get_grid()
 
-    def getButtons(self):
+    def get_buttons(self):
         """
         This method is used to get the buttons that are displayed by the GUI
         -----------------------------------------------------------------------
@@ -163,7 +159,7 @@ class Main(object):
         -----------------------------------------------------------------------
         Return : self.__gui.getButtons() [list]
         """
-        return self.__gui.getButtons()
+        return self.__gui.get_buttons()
 
     def set_canvas(self, state):
         """
@@ -177,7 +173,7 @@ class Main(object):
         """
         self.__gui.set_game_canvas()
 
-    def getPieces(self):
+    def get_pieces(self):
         """
         This method return all the pieces from a state object
         -----------------------------------------------------------------------
@@ -185,7 +181,7 @@ class Main(object):
         -----------------------------------------------------------------------
         Return : self.__state.getPieces() [list]
         """
-        return self.__state.getPieces()
+        return self.__state.get_pieces()
 
     def handle_events(self, events):
         """
@@ -198,7 +194,6 @@ class Main(object):
         if self.__state != None:
             self.__state.handle_events(events)
 
-
     def stop_gui(self):
         """
         Mehtod to stop the GUI. It set the stop event of the thread.
@@ -209,7 +204,7 @@ class Main(object):
         """
         self.__gui.set_stop_event()
 
-    def getState(self):
+    def get_state(self):
         """
         Method to get the state
         -----------------------------------------------------------------------
@@ -234,9 +229,24 @@ class Main(object):
         return self.__theme
 
     def set_theme(self, theme):
-        self.__theme = theme
+        if self.__theme != theme:
+            self.__theme = theme
+            print(self.__theme)
+
+    def get_piece_color_choice(self, nb):
+        return self.__gui.get_piece_color_choice(nb)
+
+    def get_clickable_images(self):
+        return self.__gui.get_clickable_images()
+
+    def get_strings(self):
+        return self.__gui.get_strings()
+
+    def add_flash_msg(self, msg):
+        self.__state.add_msg(msg=msg)
+
+
 if __name__ == '__main__':
     main = Main()
-    main.setUp()
+    main.set_up()
     main.launch()
-    

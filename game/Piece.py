@@ -95,7 +95,7 @@ class Piece(object):
         Return : None.
         """
         # Method used to set_up the img of the piece
-        path = "res" + sep + "img" + sep + "theme_"+ str(self._player.get_theme()) + sep + self.code_to_str() + "-" + self.getColor() + ".png"
+        path = "res" + sep + "img" + sep + "pieces" + sep + str(self.get_piece_color_choice())+ sep + self.code_to_str() + ".png"
         self._img = pygame.image.load(path)
         self._img = pygame.transform.scale(self._img, (int(62.5 - 15), int(62.5 - 15)))
         self._is_first_move = False
@@ -171,6 +171,9 @@ class Piece(object):
             return "knight"
         else:
             return "pawn"
+
+    def get_piece_color_choice(self):
+        return self._player.get_piece_color_choice(self._player.getNumber())
 
 
 if __name__ == '__main__':

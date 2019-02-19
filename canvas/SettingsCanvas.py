@@ -13,6 +13,7 @@ __version__ = u'1.0.0'
 from BasicObjects.BaseCanvas import BaseCanvas
 from display.TextToDisp import TextToDisp
 from display.Button import Button
+from display.ClickableImage import ClickableImage
 # Specific definitions
 
 
@@ -41,29 +42,34 @@ class SettingsCanvas(BaseCanvas):
 
 
 
+
     def draws(self):
         self.draw_bg()
         self.draw_buttons()
-
+        # self.draw_title()
+        self.draw_strings()
+        self.draw_clickable_images()
+        super(SettingsCanvas, self).draws()
 
     def set_up_title(self):
         # Font of the text.
         font = "res/font/good_time.ttf"
         # Creating and setting up the text
-        self.__title = TextToDisp(font=font,
+        new_string = TextToDisp(font=font,
                                   size=30,
                                   text="Settings",
                                   x=100,
                                   y=100, color=(0, 0, 0))
 
-        self.__title.set_up()
+        new_string.set_up()
 
         # Setting its x, y pos
-        x = (self._width - self.__title.getText().get_width()) / 2
-        y = self.__title.getText().get_height()
+        x = (self._width - new_string.getText().get_width()) / 2
+        y = new_string.getText().get_height()
 
-        self.__title.setX(x)
-        self.__title.setY(y)
+        new_string.setX(x)
+        new_string.setY(y)
+        self._strings.append(new_string)
 
     def draw_bg(self):
         """
@@ -74,73 +80,223 @@ class SettingsCanvas(BaseCanvas):
         Return : None.
         """
         self.fill(self.__bg_color)
-        self.draw_title()
 
-    def draw_title(self):
+
+    def set_up(self):
+        self.set_up_title()
+        self.set_up_buttons()
+        self.set_up_strings()
+        self.set_up_clickable_images()
+
+
+    def set_up_strings(self):
+
+        """" SET UP CHOOSE GRID STRING """
+        # Font of the text.
+        font = "res/font/good_time.ttf"
+        # Creating and setting up the text
+        new_str = TextToDisp(font=font,
+                                  size=25,
+                                  text="Choose a grid :",
+                                  x=100,
+                                  y=100, color=(0, 0, 0))
+
+        new_str.set_up()
+
+        # Setting its x, y pos
+        x = (self._width - new_str.getText().get_width()) / 2
+        y = new_str.getText().get_height() + 50
+
+        new_str.setX(x)
+        new_str.setY(y)
+
+        self._strings.append(new_str)
+
+        """" SET UP PLAYER 1 PIECE CHOOSE """
+        # Font of the text.
+        font = "res/font/good_time.ttf"
+        # Creating and setting up the text
+        new_str = TextToDisp(font=font,
+                             size=25,
+                             text="Player 1 pieces :",
+                             x=100,
+                             y=100, color=(0, 0, 0))
+
+        new_str.set_up()
+
+        # Setting its x, y pos
+        x = (self._width - new_str.getText().get_width()) / 2
+        y = new_str.getText().get_height() + 180
+
+        new_str.setX(x)
+        new_str.setY(y)
+
+        self._strings.append(new_str)
+
+        """" SET UP PLAYER 2 PIECE CHOOSE """
+        # Font of the text.
+        font = "res/font/good_time.ttf"
+        # Creating and setting up the text
+        new_str = TextToDisp(font=font,
+                             size=25,
+                             text="Player 2 pieces :",
+                             x=100,
+                             y=100, color=(0, 0, 0))
+
+        new_str.set_up()
+
+        # Setting its x, y pos
+        x = (self._width - new_str.getText().get_width()) / 2
+        y = new_str.getText().get_height() + 290
+
+        new_str.setX(x)
+        new_str.setY(y)
+
+        self._strings.append(new_str)
+
+
+    def draw_strings(self):
+
+        for string in self._strings:
+            self.blit(string.getText(),
+                      (string.getX(), string.getY()))
+
+
+    def set_up_clickable_images(self):
         """
-        Method used to draw the title on the canvas.
+        This method is used to set up clickable image. It will display to the
+        user the differents grids and pieces available.
         -----------------------------------------------------------------------
         Arguments : None.
         -----------------------------------------------------------------------
         Return : None.
         """
-        self.blit(self.__title.getText(),
-                  (self.__title.getX(), self.__title.getY()))
+        self.set_up_grids_img()
+        self.set_up_pieces_img_p1()
+        self.set_up_pieces_img_p2()
 
-    def set_up(self):
-        self.set_up_title()
-        self.set_up_buttons()
+    def set_up_pieces_img_p1(self):
+        x = 150
+        y = 250
+        new_img = ClickableImage(x=x, y=y, width=50, height=50, img_path="res/img/pieces/red/king.png",
+                                 action=self.change_p1_pieces_red)
+        new_img.set_up_img()
+        self._clickable_images.append(new_img)
+
+        x += 50+20
+        new_img = ClickableImage(x=x, y=y, width=50, height=50, img_path="res/img/pieces/white/king.png",
+                                 action=self.change_p1_pieces_white)
+        new_img.set_up_img()
+        self._clickable_images.append(new_img)
+
+        x += 50 + 20
+        new_img = ClickableImage(x=x, y=y, width=50, height=50, img_path="res/img/pieces/black/king.png",
+                                 action=self.change_p1_pieces_black)
+        new_img.set_up_img()
+        self._clickable_images.append(new_img)
+
+
+    def set_up_pieces_img_p2(self):
+        x = 150
+        y = 360
+        new_img = ClickableImage(x=x, y=y, width=50, height=50, img_path="res/img/pieces/red/king.png",
+                                 action=self.change_p2_pieces_red)
+        new_img.set_up_img()
+        self._clickable_images.append(new_img)
+
+        x += 50+20
+        new_img = ClickableImage(x=x, y=y, width=50, height=50, img_path="res/img/pieces/white/king.png",
+                                 action=self.change_p2_pieces_white)
+        new_img.set_up_img()
+        self._clickable_images.append(new_img)
+
+        x += 50 + 20
+        new_img = ClickableImage(x=x, y=y, width=50, height=50, img_path="res/img/pieces/black/king.png",
+                                 action=self.change_p2_pieces_black)
+        new_img.set_up_img()
+        self._clickable_images.append(new_img)
+
+
+    def set_up_grids_img(self):
+
+        x = 125
+        y = 130
+        new_img = ClickableImage(x=x, y=y, width=70, height=70, img_path="res/img/grids/chess_plate_1.png", action=self.change_grid_1)
+        new_img.set_up_img()
+
+        self._clickable_images.append(new_img)
+
+        x += 70 + 20
+        new_img = ClickableImage(x=x, y=y, width=70, height=70, img_path="res/img/grids/chess_plate_2.png",
+                                 action=self.change_grid_2)
+        new_img.set_up_img()
+
+        self._clickable_images.append(new_img)
+
+        x += 70 + 20
+        new_img = ClickableImage(x=x, y=y, width=70, height=70, img_path="res/img/grids/chess_plate_3.png",
+                                 action=self.change_grid_3)
+        new_img.set_up_img()
+
+        self._clickable_images.append(new_img)
+
+    def draw_clickable_images(self):
+        for img in self._clickable_images:
+            self.blit(img.get_img(), (img.get_x(), img.get_y()))
 
     def set_up_buttons(self):
         bw, bh = 170,40
 
         # Creating and settign up first button :
-        button = Button(x=0, y=0, w=bw, h=bh, color=(0, 0, 0), text="Home", master=self,
+        button = Button(x=0, y=0, width=bw, height=bh, color=(0, 0, 0), text="Home", master=self,
                         action=self.set_home_state)
 
         x = (self.get_width() - bw) / 2
         y = self.get_height() - 80
-        button.setX(x)
+        button.set_x(x)
         button.setY(y)
         button.set_up()
 
         # Add it to the button list
         self._buttons.append(button)
 
-        button = Button(x=80, y=100, w=100, h=40, color=(0,0,0), text="Theme 1", master=self, action=self.change_theme_to_1)
-        button.set_up()
-        self._buttons.append(button)
+    """
+    ################################
+        METHODS CALLED BY WIDGETS
+    ################################
+    """
+    def change_grid_1(self):
+        self._gui.set_grid(1)
 
-        button = Button(x=200, y=100, w=100, h=40, color=(0,0,205), text="Theme 2", master=self, action=self.change_theme_to_2)
-        button.set_up()
-        self._buttons.append(button)
+    def change_grid_2(self):
+        self._gui.set_grid(2)
 
-        button = Button(x=320, y=100, w=100, h=40, color=(34,139,34), text="Theme 2", master=self, action=self.change_theme_to_2)
-        button.set_up()
-        self._buttons.append(button)
+    def change_grid_3(self):
+        self._gui.set_grid(3)
 
-
-        x = (self.get_width() - 150) / 2
-        y =180
-        button = Button(x=x, y=y, w=150, h=60, color=(0,0,0), text="music", master=self,
-                        action=self.change_theme_to_2)
-        button.set_up()
-        self._buttons.append(button)
-
-        x = (self.get_width() - 150) / 2
-        y = 260
-        button = Button(x=x, y=y, w=150, h=60, color=(0, 0, 0), text="Credit", master=self,
-                        action=self.change_theme_to_2)
-        button.set_up()
-        self._buttons.append(button)
-
-    def change_theme_to_1(self):
-        pass
-
-    def change_theme_to_2(self):
-        pass
     def set_home_state(self):
         self.set_state("home")
+
+    def change_p1_pieces_red(self):
+        self._gui.set_player_pieces_img(nb=1, color="red")
+
+    def change_p1_pieces_white(self):
+        self._gui.set_player_pieces_img(nb=1, color="white")
+
+    def change_p1_pieces_black(self):
+        self._gui.set_player_pieces_img(nb=1, color="black")
+
+    def change_p2_pieces_red(self):
+        self._gui.set_player_pieces_img(nb=2, color="red")
+
+    def change_p2_pieces_white(self):
+        self._gui.set_player_pieces_img(nb=2, color="white")
+
+    def change_p2_pieces_black(self):
+        self._gui.set_player_pieces_img(nb=2, color="black")
+
+
+
 if __name__ == '__main__':
     pass
     

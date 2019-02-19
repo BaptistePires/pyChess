@@ -57,13 +57,14 @@ class HomeState(BaseState):
                 mx, my = pygame.mouse.get_pos()
 
                 # We check if there is a button under the click
-                for b in self._main.getButtons():
-                    if mx > b.getX() and mx < b.getX() + b.getWidth() and my > b.getY() and my < b.getY() + b.getHeight():
-                        b.action()
+                for widget in self._main.get_buttons() + self._main.get_clickable_images():
+                    if mx > widget.get_x() and mx < widget.get_x() + widget.get_width() and my > widget.get_y() and my < widget.get_y() + widget.get_height():
+                        widget.action()
+                        print("hehe")
             else:
                 mx, my = pygame.mouse.get_pos()
-                for b in self._main.getButtons():
-                    b.hover(mx, my)
+                for widget in self._main.get_buttons():
+                    widget.hover(mx, my)
 
     def launch(self):
         pass

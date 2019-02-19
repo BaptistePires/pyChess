@@ -43,8 +43,8 @@ class TextToDisp(object):
         self.__font = font
         self.__size = size
         self.__text = text
-        self.__x = x
-        self.__y = y
+        self._x = x
+        self._y = y
         self.__color = color
 
     def set_up(self):
@@ -73,18 +73,24 @@ class TextToDisp(object):
         return self.__text
 
     def getX(self):
-        return self.__x
+        return self._x
 
     def getY(self):
-        return self.__y
+        return self._y
 
     def getColor(self):
         return self.__color
 
     def setX(self, x):
-        self.__x = x
+        self._x = x
 
     def setY(self, y):
+        self._y = y
+    #
+    def set_x(self, x):
+        self.__x = x
+
+    def set_y(self, y):
         self.__y = y
 
 if __name__ == '__main__':

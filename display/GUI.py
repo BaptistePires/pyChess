@@ -3,6 +3,8 @@
 """
 
 # Module informations
+from display.FlashMessage import WARNING_CODE, FlashMessage, INFO_CODE
+
 __project__ = u''
 __author__ = u'Pires Baptiste (baptiste.pires37@gmail.com)'
 __date__ = u'28/01/19'
@@ -50,6 +52,9 @@ class GUI(MyBaseProcess):
         self.__canvas = None
         self.__icon = None
         self.__current_state_name = ""
+        self.__grid_choice = 1
+        self.__player_1_pieces_color = "white"
+        self.__player_2_pieces_color = "black"
 
     def before_processing(self):
         """
@@ -64,8 +69,7 @@ class GUI(MyBaseProcess):
 
         # Init the window
         self.__window = pygame.display.set_mode((self._ownConfig["def_w"], self._ownConfig["def_h"]))
-        self.__icon = pygame.image.load("res/img/theme_1/king-b.png")
-        pygame.display.set_icon(self.__icon)
+
 
         # Init the home canvas.
         self.__canvas = HomeCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self, cfg=self._ownConfig["canvas"]["home"])
@@ -146,23 +150,23 @@ class GUI(MyBaseProcess):
         self.__canvas = GameCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self, cfg=self._ownConfig["canvas"]["game"])
         self.__canvas.set_up()
 
-    def getGrid(self):
-        return self.__main.getGrid()
+    def get_grid(self):
+        return self.__main.get_grid()
 
-    def getPieces(self):
-        return self.__main.getPieces()
+    def get_pieces(self):
+        return self.__main.get_pieces()
 
     def set_stop_event(self):
         self._stopEvent.set()
 
-    def getWindow(self):
+    def get_window(self):
         return self.__window
 
-    def gerFrame(self):
+    def ger_frame(self):
         return self.__canvas
 
-    def getButtons(self):
-        return self.__canvas.getButtons()
+    def get_buttons(self):
+        return self.__canvas.get_buttons()
 
     def set_state(self, state):
         self.__main.set_state(state)
@@ -172,6 +176,83 @@ class GUI(MyBaseProcess):
 
     def get_theme(self):
         return self.__main.get_theme()
+
+    def set_theme(self,theme):
+        self.__main.set_theme(theme)
+
+    def get_piece_color_choice(self, nb):
+
+        if nb == 1:
+            return self.__player_1_pieces_color
+        else:
+            return self.__player_2_pieces_color
+
+    def set_player_pieces_img(self, nb, color):
+        """
+        Method to set up the pieces color of a layer
+        -----------------------------------------------------------------------
+        Arguments :
+            - nb : Number of the player
+            - color : String that represents the color
+        -----------------------------------------------------------------------
+        Return : None.
+        """
+        # Flag used to display a Flash Message
+        no_change_color = False
+        same_color_players = False
+        color_changed = False
+
+        # Checking the number
+        if nb == 1:
+            # Checking if we can change the color
+            if self.__player_1_pieces_color == color:
+                no_change_color = True
+            elif self.__player_2_pieces_color == color:
+                same_color_players = True
+            else:
+                self.__player_1_pieces_color = color
+                color_changed = True
+
+        else:
+            if self.__player_2_pieces_color == color:
+                no_change_color = True
+            elif self.__player_1_pieces_color == color:
+                same_color_players = True
+            else:
+                self.__player_2_pieces_color = color
+                color_changed = True
+
+        # Displaying Flash message that correspond to what happened
+        if no_change_color:
+            self.__main.add_flash_msg(
+                FlashMessage(size=15, text="This player already have this color", x=0, y=0, code=INFO_CODE,
+                             duration=2))
+
+        elif same_color_players:
+            self.__main.add_flash_msg(
+                FlashMessage(size=15, text="Both players can't have the same color", x=0, y=0, code=INFO_CODE,
+                             duration=2))
+
+        elif color_changed:
+            self.__main.add_flash_msg(
+                FlashMessage(size=15, text="Color changed for player : "  + str(nb), x=0, y=0, code=INFO_CODE,
+                             duration=2))
+
+    def get_grid_choice(self):
+        return self.__grid_choice
+
+    def set_grid(self, grid):
+        self.__grid_choice = grid
+        self.__main.add_flash_msg(
+            FlashMessage(size=15, text="Grid has been updated", x=0, y=0, code=INFO_CODE,
+                         duration=2))
+
+    def get_clickable_images(self):
+        return self.__canvas.get_clickable_images()
+
+    def get_strings(self):
+        return self.__canvas.get_strings()
+
 
 
 if __name__ == '__main__':
