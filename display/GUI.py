@@ -18,6 +18,7 @@ from BasicObjects.MyBaseProcess import MyBaseProcess
 import time
 from importlib import import_module
 
+
 # Specific definitions
 
 
@@ -70,15 +71,13 @@ class GUI(MyBaseProcess):
         # Init the window
         self.__window = pygame.display.set_mode((self._ownConfig["def_w"], self._ownConfig["def_h"]))
 
-
-        # Init the home canvas.
-        self.__canvas = HomeCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self, cfg=self._ownConfig["canvas"]["home"])
+        # Init the home canvas
+        self.__canvas = HomeCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self,
+                                   cfg=self._ownConfig["canvas"]["home"])
         self.__canvas.set_up()
 
         # 'Launching' the process
         self._isRunning = True
-
-
 
     def run(self):
         """
@@ -102,9 +101,7 @@ class GUI(MyBaseProcess):
             super(GUI, self).handle_self_events()
             self.__main.handle_events(pygame.event.get())
 
-
             time.sleep(0.001)
-
 
     def set_up_canvas(self):
 
@@ -126,7 +123,9 @@ class GUI(MyBaseProcess):
                 if class_name:
                     state_class = getattr(module, class_name)
                     # Setting the current state got in parameters as the new state
-                    self.__canvas = state_class(gui=self, cfg=self._ownConfig["canvas"][current_state.lower()], master=self.__window,width=self._ownConfig["def_w"], height=self._ownConfig["def_h"])
+                    self.__canvas = state_class(gui=self, cfg=self._ownConfig["canvas"][current_state.lower()],
+                                                master=self.__window, width=self._ownConfig["def_w"],
+                                                height=self._ownConfig["def_h"])
                     self.__canvas.set_up()
                     # self.__state.launch()
                     self.__current_state_name = current_state
@@ -147,7 +146,8 @@ class GUI(MyBaseProcess):
         return self._ownConfig["def_h"]
 
     def set_game_canvas(self):
-        self.__canvas = GameCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self, cfg=self._ownConfig["canvas"]["game"])
+        self.__canvas = GameCanvas(self, self._ownConfig["def_w"], self._ownConfig["def_h"], gui=self,
+                                   cfg=self._ownConfig["canvas"]["game"])
         self.__canvas.set_up()
 
     def get_grid(self):
@@ -177,7 +177,7 @@ class GUI(MyBaseProcess):
     def get_theme(self):
         return self.__main.get_theme()
 
-    def set_theme(self,theme):
+    def set_theme(self, theme):
         self.__main.set_theme(theme)
 
     def get_piece_color_choice(self, nb):
@@ -235,7 +235,7 @@ class GUI(MyBaseProcess):
 
         elif color_changed:
             self.__main.add_flash_msg(
-                FlashMessage(size=15, text="Color changed for player : "  + str(nb), x=0, y=0, code=INFO_CODE,
+                FlashMessage(size=15, text="Color changed for player : " + str(nb), x=0, y=0, code=INFO_CODE,
                              duration=2))
 
     def get_grid_choice(self):
@@ -252,7 +252,6 @@ class GUI(MyBaseProcess):
 
     def get_strings(self):
         return self.__canvas.get_strings()
-
 
 
 if __name__ == '__main__':

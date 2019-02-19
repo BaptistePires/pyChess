@@ -53,7 +53,7 @@ class SettingsCanvas(BaseCanvas):
 
     def set_up_title(self):
         # Font of the text.
-        font = "res/font/good_time.ttf"
+        font = "res/font/GOOD_DADDY.otf"
         # Creating and setting up the text
         new_string = TextToDisp(font=font,
                                   size=30,
@@ -65,7 +65,7 @@ class SettingsCanvas(BaseCanvas):
 
         # Setting its x, y pos
         x = (self._width - new_string.getText().get_width()) / 2
-        y = new_string.getText().get_height()
+        y = new_string.getText().get_height() - 10
 
         new_string.setX(x)
         new_string.setY(y)
@@ -93,7 +93,7 @@ class SettingsCanvas(BaseCanvas):
 
         """" SET UP CHOOSE GRID STRING """
         # Font of the text.
-        font = "res/font/good_time.ttf"
+        font = "res/font/GOOD_DADDY.otf"
         # Creating and setting up the text
         new_str = TextToDisp(font=font,
                                   size=25,
@@ -114,11 +114,11 @@ class SettingsCanvas(BaseCanvas):
 
         """" SET UP PLAYER 1 PIECE CHOOSE """
         # Font of the text.
-        font = "res/font/good_time.ttf"
+        font = "res/font/GOOD_DADDY.otf"
         # Creating and setting up the text
         new_str = TextToDisp(font=font,
                              size=25,
-                             text="Player 1 pieces :",
+                             text="Player one pieces :",
                              x=100,
                              y=100, color=(0, 0, 0))
 
@@ -135,11 +135,11 @@ class SettingsCanvas(BaseCanvas):
 
         """" SET UP PLAYER 2 PIECE CHOOSE """
         # Font of the text.
-        font = "res/font/good_time.ttf"
+        font = "res/font/GOOD_DADDY.otf"
         # Creating and setting up the text
         new_str = TextToDisp(font=font,
                              size=25,
-                             text="Player 2 pieces :",
+                             text="Player two pieces :",
                              x=100,
                              y=100, color=(0, 0, 0))
 
@@ -176,7 +176,7 @@ class SettingsCanvas(BaseCanvas):
         self.set_up_pieces_img_p2()
 
     def set_up_pieces_img_p1(self):
-        x = 150
+        x = 120
         y = 250
         new_img = ClickableImage(x=x, y=y, width=50, height=50, img_path="res/img/pieces/red/king.png",
                                  action=self.change_p1_pieces_red)
@@ -195,9 +195,14 @@ class SettingsCanvas(BaseCanvas):
         new_img.set_up_img()
         self._clickable_images.append(new_img)
 
+        x += 50 + 20
+        new_img = ClickableImage(x=x, y=y, width=50, height=50, img_path="res/img/pieces/blue/king.png",
+                                 action=self.change_p1_pieces_blue)
+        new_img.set_up_img()
+        self._clickable_images.append(new_img)
 
     def set_up_pieces_img_p2(self):
-        x = 150
+        x = 120
         y = 360
         new_img = ClickableImage(x=x, y=y, width=50, height=50, img_path="res/img/pieces/red/king.png",
                                  action=self.change_p2_pieces_red)
@@ -213,6 +218,12 @@ class SettingsCanvas(BaseCanvas):
         x += 50 + 20
         new_img = ClickableImage(x=x, y=y, width=50, height=50, img_path="res/img/pieces/black/king.png",
                                  action=self.change_p2_pieces_black)
+        new_img.set_up_img()
+        self._clickable_images.append(new_img)
+
+        x += 50 + 20
+        new_img = ClickableImage(x=x, y=y, width=50, height=50, img_path="res/img/pieces/blue/king.png",
+                                 action=self.change_p2_pieces_blue)
         new_img.set_up_img()
         self._clickable_images.append(new_img)
 
@@ -280,6 +291,9 @@ class SettingsCanvas(BaseCanvas):
     def change_p1_pieces_red(self):
         self._gui.set_player_pieces_img(nb=1, color="red")
 
+    def change_p1_pieces_blue(self):
+        self._gui.set_player_pieces_img(nb=1, color="blue")
+
     def change_p1_pieces_white(self):
         self._gui.set_player_pieces_img(nb=1, color="white")
 
@@ -294,6 +308,9 @@ class SettingsCanvas(BaseCanvas):
 
     def change_p2_pieces_black(self):
         self._gui.set_player_pieces_img(nb=2, color="black")
+
+    def change_p2_pieces_blue(self):
+        self._gui.set_player_pieces_img(nb=2, color="blue")
 
 
 

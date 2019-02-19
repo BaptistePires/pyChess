@@ -59,7 +59,7 @@ class Button(BaseWidget):
         Return : None.
         """
         # Default font for the button
-        font = "res/font/good_time.ttf"
+        font = "res/font/GOOD_DADDY.otf"
 
         # Setting up the text of it
         self.__text = TextToDisp(font=font,

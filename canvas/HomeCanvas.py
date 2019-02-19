@@ -65,7 +65,7 @@ class HomeCanvas(BaseCanvas):
         Return : None.
         """
         # Font of the text.
-        font = "res/font/good_time.ttf"
+        font = "res/font/GOOD_DADDY.otf"
         # Creating and setting up the text
         self.__title = TextToDisp(font=font,
                                   size=60,
@@ -107,7 +107,7 @@ class HomeCanvas(BaseCanvas):
         self._buttons.append(button)
 
         # Creating and settign up second button
-        button = Button(x=0, y=0, width=b_w, height=b_h, color=(0, 0, 0), text="Play !", master=self, action=self.set_game_state)
+        button = Button(x=0, y=0, width=b_w, height=b_h, color=(0, 0, 0), text="Play", master=self, action=self.set_game_state)
 
         x = (self.get_width() - b_w) / 2
         y = self.get_height() - 110 - b_h - 10

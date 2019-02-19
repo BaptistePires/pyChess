@@ -25,7 +25,7 @@ class Player(BaseObject):
     This is the player class.
     ---------------------------------------------------------------------------
     Attributes :
-        - __game : Game object.
+        - __game_state : GameState object.
         - __pieces : Pieces of the pieces.
         - __number : Number of the player.
         - __playing : Flag to know if the player is currently playing.
@@ -41,7 +41,7 @@ class Player(BaseObject):
         Return : None.
         """
         super(Player, self).__init__(config=cfg)
-        self.__game = game
+        self.__game_state = game
         self.__pieces = None
         self.__number = number
         self.__playing = False
@@ -79,7 +79,7 @@ class Player(BaseObject):
         return self.__isCheck
 
     def get_game(self):
-        return self.__game
+        return self.__game_state
 
     def get_pieces_pos(self):
         returned_list = []
@@ -90,10 +90,10 @@ class Player(BaseObject):
         return returned_list
 
     def get_theme(self):
-        return self.__game.get_theme()
+        return self.__game_state.get_theme()
 
     def get_piece_color_choice(self, nb):
-        return self.__game.get_piece_color_choice(nb)
+        return self.__game_state.get_piece_color_choice(nb)
 
 if __name__ == '__main__':
     pass

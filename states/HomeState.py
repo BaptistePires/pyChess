@@ -60,7 +60,6 @@ class HomeState(BaseState):
                 for widget in self._main.get_buttons() + self._main.get_clickable_images():
                     if mx > widget.get_x() and mx < widget.get_x() + widget.get_width() and my > widget.get_y() and my < widget.get_y() + widget.get_height():
                         widget.action()
-                        print("hehe")
             else:
                 mx, my = pygame.mouse.get_pos()
                 for widget in self._main.get_buttons():
